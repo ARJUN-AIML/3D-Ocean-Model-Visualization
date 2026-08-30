@@ -2,7 +2,8 @@
 backend/ml/preprocessing/alignment.py
 Model-vs-Observation Spatiotemporal Alignment Pipeline.
 Matches in-situ observation profiles (Argo, Glider, CTD, Mooring, etc.) with multidimensional numerical model fields.
-Preserves spatial distance (km), temporal offset (hours), and depth offset (m).
+Supports configurable tolerances: max_spatial_distance_km, max_depth_difference_m, max_time_difference_hours.
+Preserves spatial distance (km), temporal offset (hours), depth offset (m), and calculates Bias = Observation - Model.
 """
 
 from typing import List, Dict, Any, Optional, Tuple
@@ -36,16 +37,29 @@ class ModelObservationAligner:
     Aligns observation profiles with numerical model outputs.
     Supports 'nearest' grid lookup and 'interp' (trilinear) interpolation.
     Sensor-agnostic across Argo, Glider, CTD, Moorings, ADCP, BGC.
+    Enforces configurable max distance, depth, and time tolerances.
     """
 
-    def __init__(self, method: str = "nearest"):
+    def __init__(
+        self,
+        method: str = "nearest",
+        max_spatial_distance_km: Optional[float] = 200.0,
+        max_depth_difference_m: Optional[float] = 100.0,
+        max_time_difference_hours: Optional[float] = 48.0,
+    ):
         """
         Args:
             method: 'nearest' or 'interp'
+            max_spatial_distance_km: Maximum allowed spatial distance cutoff in km.
+            max_depth_difference_m: Maximum allowed depth offset cutoff in meters.
+            max_time_difference_hours: Maximum allowed temporal offset cutoff in hours.
         """
         if method not in ("nearest", "interp"):
             raise ValueError("Method must be 'nearest' or 'interp'")
         self.method = method
+        self.max_spatial_distance_km = max_spatial_distance_km
+        self.max_depth_difference_m = max_depth_difference_m
+        self.max_time_difference_hours = max_time_difference_hours
 
     def align_observations(
         self,
@@ -53,18 +67,13 @@ class ModelObservationAligner:
         observations: List[ObservationRecord],
         target_variable: str = "temperature",
         sensor_types: Optional[List[str]] = None,
+        dataset_id: str = "default_model",
     ) -> pd.DataFrame:
         """
         Pairs observation records with model grid predictions.
 
-        Args:
-            model_ds: xarray Dataset containing numerical model output.
-            observations: List of ObservationRecord instances.
-            target_variable: 'temperature' or 'salinity'.
-            sensor_types: Optional filter list for sensor types (e.g. ['argo'], ['glider']).
-
         Returns:
-            pd.DataFrame with aligned rows containing obs and model attributes + offsets.
+            pd.DataFrame with aligned rows containing obs and model attributes, offsets, and Bias = Obs - Model.
         """
         model_ds = normalize_dataset_schema(model_ds)
         aligned_rows = []
@@ -78,11 +87,12 @@ class ModelObservationAligner:
                 continue
 
             obs_time = np.datetime64(obs.time)
+            quality_flag = obs.source_metadata.get("quality_flag", "QC_PASSED")
 
             for p in obs.profiles:
                 # Target availability check
-                val_to_check = p.temperature if target_variable == "temperature" else p.salinity
-                if val_to_check is None:
+                obs_val = p.temperature if target_variable == "temperature" else p.salinity
+                if obs_val is None or np.isnan(obs_val):
                     continue  # Do not silently interpolate or extrapolate missing observation values
 
                 if self.method == "nearest":
@@ -133,7 +143,24 @@ class ModelObservationAligner:
                 time_delta_h = abs((pd.to_datetime(obs.time) - pd.to_datetime(matched_time)).total_seconds() / 3600.0)
                 depth_delta_m = abs(p.depth - matched_depth)
 
+                # Tolerance checks: skip match if outside configured tolerances
+                if self.max_spatial_distance_km is not None and spatial_dist > self.max_spatial_distance_km:
+                    continue
+                if self.max_depth_difference_m is not None and depth_delta_m > self.max_depth_difference_m:
+                    continue
+                if self.max_time_difference_hours is not None and time_delta_h > self.max_time_difference_hours:
+                    continue
+
+                model_val = model_temp if target_variable == "temperature" else model_sal
+                if np.isnan(model_val):
+                    continue
+
+                bias = float(obs_val - model_val)
+
                 aligned_rows.append({
+                    "observation_id": obs.platform_id,
+                    "dataset_id": dataset_id,
+                    "source": obs.instrument_type.lower(),
                     "obs_platform_id": obs.platform_id,
                     "instrument_type": obs.instrument_type.lower(),
                     "obs_time": obs.time,
@@ -146,6 +173,11 @@ class ModelObservationAligner:
                     "model_salinity": model_sal,
                     "model_u": model_u,
                     "model_v": model_v,
+                    "model_value": model_val,
+                    "obs_value": obs_val,
+                    "bias": bias,
+                    "quality_flag": quality_flag,
+                    "match_method": self.method,
                     "spatial_distance_km": spatial_dist,
                     "time_delta_hours": time_delta_h,
                     "depth_delta_m": depth_delta_m,

@@ -1,7 +1,8 @@
 """
 backend/ml/baselines/anomaly.py
 Scientific Statistical Anomaly Baseline Module.
-Implements climatological mean baseline, raw anomalies, and standardized z-score anomalies.
+Implements climatological mean baseline, raw anomalies, standardized z-score anomalies,
+and scientific anomaly severity classification (NORMAL, WATCH, WARNING, CRITICAL).
 """
 
 from typing import Dict, Optional, Tuple, Union
@@ -10,6 +11,27 @@ import pandas as pd
 import xarray as xr
 
 from backend.science.canonical import COORD_TIME, COORD_DEPTH, COORD_LATITUDE, COORD_LONGITUDE, VAR_TEMPERATURE
+
+
+def classify_anomaly_severity(z_score: float) -> str:
+    """
+    Classifies standardized z-score anomaly into scientific severity tiers:
+    - |z_score| <= 1.0 : NORMAL
+    - 1.0 < |z_score| <= 2.0 : WATCH
+    - 2.0 < |z_score| <= 3.0 : WARNING
+    - |z_score| > 3.0 : CRITICAL
+    """
+    if np.isnan(z_score):
+        return "NORMAL"
+    abs_z = abs(float(z_score))
+    if abs_z <= 1.0:
+        return "NORMAL"
+    elif abs_z <= 2.0:
+        return "WATCH"
+    elif abs_z <= 3.0:
+        return "WARNING"
+    else:
+        return "CRITICAL"
 
 
 class StatisticalAnomalyBaseline:
@@ -95,7 +117,7 @@ class StatisticalAnomalyBaseline:
         depth_col: str = "depth",
     ) -> pd.DataFrame:
         """
-        Computes statistical anomaly for a pandas DataFrame of point/profile observations.
+        Computes statistical anomaly and severity classification for a pandas DataFrame of point/profile observations.
         """
         df_out = df.copy()
 
@@ -113,7 +135,10 @@ class StatisticalAnomalyBaseline:
 
         df_out[f"{value_col}_anomaly"] = df_out[value_col] - group_means
         std_safe = group_stds.replace(0, np.nan)
-        df_out[f"{value_col}_std_anomaly"] = df_out[f"{value_col}_anomaly"] / std_safe
+        z_score = df_out[f"{value_col}_anomaly"] / std_safe
+        df_out[f"{value_col}_std_anomaly"] = z_score
+        df_out[f"{value_col}_z_score"] = z_score
+        df_out["severity"] = z_score.apply(classify_anomaly_severity)
 
         df_out.drop(columns=["_group"], inplace=True)
         return df_out
