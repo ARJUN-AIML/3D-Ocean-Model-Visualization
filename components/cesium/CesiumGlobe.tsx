@@ -228,11 +228,12 @@ function CesiumGlobe() {
         scene.globe.depthTestAgainstTerrain = false;
         scene.globe.terrainExaggeration = 1.0;
         
-        // Full seamless starry sky background across 100% of the 3D viewport
-        scene.globe.baseColor = Cesium.Color.BLACK;
-        scene.backgroundColor = Cesium.Color.BLACK;
+        // Deep Dark Navy Background matching reference design (#051124)
+        const navyBg = Cesium.Color.fromCssColorString('#051124');
+        scene.globe.baseColor = navyBg;
+        scene.backgroundColor = navyBg;
         if (scene.skyBox) {
-          scene.skyBox.show = true;
+          scene.skyBox.show = false;
         }
 
         scene.globe.maximumScreenSpaceError = 1.5;
@@ -786,7 +787,7 @@ function CesiumGlobe() {
   }, [layers, activeTrajectory, selectedArgo, selectedAnomaly, selectedLocation, cesiumLoaded]);
 
   return (
-    <div className="absolute inset-0 w-full h-full bg-navy-darker overflow-hidden select-none">
+    <div className="absolute inset-0 w-full h-full bg-[#051124] overflow-hidden select-none">
       {/* Cesium Canvas Container */}
       <div ref={containerRef} className="absolute inset-0 w-full h-full" />
 
