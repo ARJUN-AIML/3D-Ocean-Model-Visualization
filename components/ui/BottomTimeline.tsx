@@ -36,13 +36,13 @@ export default function BottomTimeline() {
 
   return (
     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-30 w-full max-w-2xl px-4 select-none">
-      <div className="bg-ocean-900/85 backdrop-blur-md border border-cyan-500/20 rounded-xl p-3 shadow-panel-dark text-slate-200">
+      <div className="bg-navy-deep border-2 border-navy-sky rounded-xl p-3 shadow-panel text-navy-ice">
         <div className="flex items-center justify-between gap-4 mb-2">
           {/* Playback Actions */}
           <div className="flex items-center gap-1.5">
             <button
               onClick={handlePrev}
-              className="p-1.5 rounded-lg bg-ocean-950 hover:bg-slate-800 text-slate-300 transition"
+              className="p-1.5 rounded-lg bg-navy-ocean hover:bg-navy-sky hover:text-navy-deep text-navy-ice border border-navy-sky transition"
               title="Previous Timestep"
             >
               <SkipBack className="w-4 h-4" />
@@ -50,16 +50,16 @@ export default function BottomTimeline() {
 
             <button
               onClick={() => setIsPlaying(!isPlaying)}
-              className="p-2 rounded-lg bg-cyan-500 hover:bg-cyan-400 text-ocean-950 font-bold transition shadow-glow-cyan flex items-center gap-1.5"
+              className="p-2 rounded-lg bg-navy-ocean hover:bg-navy-sky hover:text-navy-deep text-navy-ice font-bold border-2 border-navy-sky transition shadow-md flex items-center gap-1.5"
               title={isPlaying ? 'Pause Animation' : 'Play Timeline'}
             >
-              {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4 fill-current" />}
-              <span className="text-xs">{isPlaying ? 'PAUSE' : 'PLAY'}</span>
+              {isPlaying ? <Pause className="w-4 h-4 text-navy-ice" /> : <Play className="w-4 h-4 text-navy-ice fill-current" />}
+              <span className="text-xs font-mono">{isPlaying ? 'PAUSE' : 'PLAY'}</span>
             </button>
 
             <button
               onClick={handleNext}
-              className="p-1.5 rounded-lg bg-ocean-950 hover:bg-slate-800 text-slate-300 transition"
+              className="p-1.5 rounded-lg bg-navy-ocean hover:bg-navy-sky hover:text-navy-deep text-navy-ice border border-navy-sky transition"
               title="Next Timestep"
             >
               <SkipForward className="w-4 h-4" />
@@ -67,22 +67,22 @@ export default function BottomTimeline() {
           </div>
 
           {/* Current Date/Time Display */}
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-ocean-950 border border-slate-800 text-xs font-mono">
-            <Clock className="w-3.5 h-3.5 text-cyan-400" />
-            <span className="text-slate-400">Timestep:</span>
-            <span className="font-bold text-cyan-300">{TIME_STEPS[timeIndex]}</span>
+          <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-navy-ocean border border-navy-sky text-xs font-mono">
+            <Clock className="w-3.5 h-3.5 text-navy-ice" />
+            <span className="text-navy-ice font-sans">Timestep:</span>
+            <span className="font-bold text-navy-ice">{TIME_STEPS[timeIndex]}</span>
           </div>
 
           {/* Speed Selector */}
-          <div className="flex items-center gap-1 bg-ocean-950 p-1 rounded-lg border border-slate-800 text-[11px] font-mono">
+          <div className="flex items-center gap-1 bg-navy-ocean p-1 rounded-lg border border-navy-sky text-[11px] font-mono">
             {[1, 2, 4].map((spd) => (
               <button
                 key={spd}
                 onClick={() => setPlaybackSpeed(spd)}
                 className={`px-2 py-0.5 rounded transition ${
                   playbackSpeed === spd
-                    ? 'bg-cyan-950 text-cyan-300 font-bold border border-cyan-500/40'
-                    : 'text-slate-400 hover:text-slate-200'
+                    ? 'bg-navy-sky text-navy-deep font-bold border border-navy-ice'
+                    : 'text-navy-ice hover:bg-navy-sky hover:text-navy-deep'
                 }`}
               >
                 {spd}x
@@ -99,12 +99,12 @@ export default function BottomTimeline() {
             max={TIME_STEPS.length - 1}
             value={timeIndex}
             onChange={(e) => setTimeIndex(Number(e.target.value))}
-            className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-400"
+            className="w-full h-2.5 bg-navy-ocean border border-navy-sky rounded-lg appearance-none cursor-pointer accent-[#4988C4]"
           />
         </div>
 
         {/* Step Tick Markers */}
-        <div className="flex justify-between px-1 mt-1.5 text-[9px] font-mono text-slate-400">
+        <div className="flex justify-between px-1 mt-1.5 text-[9px] font-mono text-navy-ice font-semibold">
           <span>01 SEP</span>
           <span>01 SEP 12:00</span>
           <span>02 SEP (CURRENT)</span>

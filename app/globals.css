@@ -1,8 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 @import 'cesium/Build/Cesium/Widgets/widgets.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Brand Color Palette Utilities (UI Chrome) */
+.bg-navy-darker { background-color: #061024 !important; }
+.bg-navy-deep { background-color: #0F2854 !important; }
+.bg-navy-ocean { background-color: #1C4D8D !important; }
+.bg-navy-sky { background-color: #4988C4 !important; }
+.bg-navy-ice { background-color: #BDE8F5 !important; }
+
+.border-navy-darker { border-color: #061024 !important; }
+.border-navy-deep { border-color: #0F2854 !important; }
+.border-navy-ocean { border-color: #1C4D8D !important; }
+.border-navy-sky { border-color: #4988C4 !important; }
+.border-navy-ice { border-color: #BDE8F5 !important; }
+
+.text-navy-deep { color: #0F2854 !important; }
+.text-navy-ocean { color: #1C4D8D !important; }
+.text-navy-sky { color: #4988C4 !important; }
+.text-navy-ice { color: #BDE8F5 !important; }
+.text-navy-muted { color: #7FA9C9 !important; }
 
 html, body, #__next {
   width: 100vw;
@@ -10,8 +30,13 @@ html, body, #__next {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #030712;
+  background-color: #061024;
   font-family: 'Inter', sans-serif;
+  color: #BDE8F5;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Space Grotesk', sans-serif;
 }
 
 /* Cesium Fullview & Smooth Render Fixes */
@@ -44,14 +69,14 @@ html, body, #__next {
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(10, 17, 32, 0.6);
+  background: #061024;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(56, 189, 248, 0.3);
+  background: #1C4D8D;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(56, 189, 248, 0.6);
+  background: #4988C4;
 }

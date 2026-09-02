@@ -136,10 +136,10 @@ function CesiumGlobe() {
   // ---------------------------------------------------------------------------
   useEffect(() => {
     if (typeof window === 'undefined' || !containerRef.current) return;
-    // Step 2 Fix: Synchronous ref guard against concurrent async React mounts
     if (viewerRef.current || isInitializingRef.current) return;
     isInitializingRef.current = true;
 
+    let isMounted = true;
     let viewer: any = null;
 
     const initCesium = async () => {
@@ -147,6 +147,11 @@ function CesiumGlobe() {
         setLoadingText('Loading Photorealistic Earth Imagery...');
         const Cesium = await import('cesium');
         (window as any).CESIUM_BASE_URL = '/cesium';
+
+        if (!isMounted) {
+          isInitializingRef.current = false;
+          return;
+        }
 
         // Step 2 Fix: Purge container DOM to guarantee strictly 1 canvas element
         if (containerRef.current) {
@@ -183,13 +188,21 @@ function CesiumGlobe() {
           maximumRenderRate: 60
         });
 
+        if (!isMounted) {
+          if (viewer && !viewer.isDestroyed()) {
+            viewer.destroy();
+          }
+          isInitializingRef.current = false;
+          return;
+        }
+
         viewerRef.current = viewer;
         isInitializingRef.current = false;
 
         const scene = viewer.scene;
 
-        // Step 1 Diagnostic 1: Enable built-in FPS & Frame Time overlay
-        scene.debugShowFramesPerSecond = true;
+        // Remove FPS counter visual presence overlay
+        scene.debugShowFramesPerSecond = false;
 
         // Step 1 Diagnostic 4: Log DOM canvas count & runtime logarithmicDepthBuffer
         console.log('[CesiumGlobe Diagnostic] Active WebGL Canvases in DOM:', containerRef.current?.querySelectorAll('canvas').length);
@@ -214,8 +227,13 @@ function CesiumGlobe() {
         scene.globe.showGroundAtmosphere = true;
         scene.globe.depthTestAgainstTerrain = false;
         scene.globe.terrainExaggeration = 1.0;
-        scene.globe.baseColor = Cesium.Color.fromCssColorString('#020617');
-        scene.backgroundColor = Cesium.Color.fromCssColorString('#020617');
+        
+        // Full seamless starry sky background across 100% of the 3D viewport
+        scene.globe.baseColor = Cesium.Color.BLACK;
+        scene.backgroundColor = Cesium.Color.BLACK;
+        if (scene.skyBox) {
+          scene.skyBox.show = true;
+        }
 
         scene.globe.maximumScreenSpaceError = 1.5;
         scene.globe.tileCacheSize = 2000;
@@ -442,6 +460,7 @@ function CesiumGlobe() {
     initCesium();
 
     return () => {
+      isMounted = false;
       isInitializingRef.current = false;
       if (viewerRef.current && !viewerRef.current.isDestroyed()) {
         viewerRef.current.destroy();
@@ -767,23 +786,23 @@ function CesiumGlobe() {
   }, [layers, activeTrajectory, selectedArgo, selectedAnomaly, selectedLocation, cesiumLoaded]);
 
   return (
-    <div className="absolute inset-0 w-full h-full bg-ocean-950 overflow-hidden select-none">
+    <div className="absolute inset-0 w-full h-full bg-navy-darker overflow-hidden select-none">
       {/* Cesium Canvas Container */}
       <div ref={containerRef} className="absolute inset-0 w-full h-full" />
 
       {/* Live Geospatial Cursor HUD */}
       {hoverInfo.visible && (
-        <div className="hidden sm:flex absolute bottom-4 left-4 z-20 pointer-events-none items-center gap-2.5 px-3 py-1.5 rounded-lg bg-ocean-950/85 backdrop-blur-md border border-cyan-500/30 text-[11px] font-mono text-slate-300 shadow-glow-cyan">
-          <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+        <div className="hidden sm:flex absolute bottom-4 left-4 z-20 pointer-events-none items-center gap-2.5 px-3 py-1.5 rounded-lg bg-navy-deep border border-navy-sky/30 text-[11px] font-mono text-navy-ice shadow-panel">
+          <div className="w-2 h-2 rounded-full bg-navy-sky animate-pulse" />
           <span>
             {hoverInfo.lat >= 0 ? `${hoverInfo.lat}°N` : `${Math.abs(hoverInfo.lat)}°S`}, {hoverInfo.lon >= 0 ? `${hoverInfo.lon}°E` : `${Math.abs(hoverInfo.lon)}°W`}
           </span>
-          <span className="text-slate-600">|</span>
-          <span className="text-cyan-300">Est. SST: {hoverInfo.temperatureEst}°C</span>
+          <span className="text-navy-muted">|</span>
+          <span className="text-navy-sky">Est. SST: {hoverInfo.temperatureEst}°C</span>
           {hoverInfo.stationName && (
             <>
-              <span className="text-slate-600">|</span>
-              <span className="text-amber-300 font-bold">{hoverInfo.stationName}</span>
+              <span className="text-navy-muted">|</span>
+              <span className="text-navy-ice font-bold">{hoverInfo.stationName}</span>
             </>
           )}
         </div>
@@ -791,26 +810,26 @@ function CesiumGlobe() {
 
       {/* Loading Overlay */}
       {!cesiumLoaded && (
-        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-ocean-950/90 backdrop-blur-md text-slate-100">
+        <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-navy-darker text-navy-ice">
           <div className="relative w-16 h-16 mb-4">
-            <div className="absolute inset-0 rounded-full border-4 border-cyan-500/20 animate-ping" />
-            <div className="absolute inset-0 rounded-full border-4 border-t-cyan-400 border-r-transparent border-b-transparent border-l-transparent animate-spin" />
+            <div className="absolute inset-0 rounded-full border-4 border-navy-sky/20 animate-ping" />
+            <div className="absolute inset-0 rounded-full border-4 border-t-navy-sky border-r-transparent border-b-transparent border-l-transparent animate-spin" />
           </div>
-          <div className="text-lg font-medium tracking-wide text-cyan-300">{loadingText}</div>
-          <div className="text-xs text-slate-400 mt-2 font-mono">CESIUMJS 3D HIGH PRECISION ENGINE</div>
+          <div className="text-lg font-heading font-medium tracking-wide text-navy-ice">{loadingText}</div>
+          <div className="text-xs text-navy-muted mt-2 font-mono">CESIUMJS 3D HIGH PRECISION ENGINE</div>
         </div>
       )}
 
       {/* Trajectory Mode Banner */}
       {trajectoryModeActive && (
-        <div className="absolute top-20 left-1/2 -translate-x-1/2 z-30 px-4 py-2 bg-cyan-950/90 border border-cyan-400/50 rounded-full backdrop-blur-md shadow-glow-cyan flex items-center gap-3 animate-pulse">
-          <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping" />
-          <span className="text-xs font-semibold tracking-wider text-cyan-200 uppercase">
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 z-30 px-4 py-2 bg-navy-deep border border-navy-sky/50 rounded-full shadow-panel flex items-center gap-3 animate-pulse">
+          <span className="w-2.5 h-2.5 rounded-full bg-navy-sky animate-ping" />
+          <span className="text-xs font-heading font-semibold tracking-wider text-navy-ice uppercase">
             TRAJECTORY SIMULATOR ACTIVE — CLICK ANY OCEAN LOCATION TO DRIFT
           </span>
           <button
             onClick={() => setTrajectoryModeActive(false)}
-            className="ml-2 text-xs px-2 py-0.5 rounded bg-cyan-800/60 text-cyan-100 hover:bg-cyan-700 transition"
+            className="ml-2 text-xs px-2 py-0.5 rounded bg-navy-ocean text-navy-ice hover:bg-navy-sky/30 transition border border-navy-sky/40"
           >
             Cancel
           </button>

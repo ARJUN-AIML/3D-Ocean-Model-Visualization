@@ -13,9 +13,9 @@ export default function ModelVsObsChart({ biasData }: ModelVsObsChartProps) {
     backgroundColor: 'transparent',
     tooltip: {
       trigger: 'axis',
-      backgroundColor: '#0a1120',
-      borderColor: '#38bdf8',
-      textStyle: { color: '#e2e8f0', fontSize: 11 }
+      backgroundColor: '#061024',
+      borderColor: '#4988C4',
+      textStyle: { color: '#BDE8F5', fontSize: 11 }
     },
     grid: {
       left: '10%',
@@ -27,16 +27,16 @@ export default function ModelVsObsChart({ biasData }: ModelVsObsChartProps) {
     xAxis: {
       type: 'category',
       data: ['Raw Model', 'AI Corrected', 'Observed (Argo)'],
-      axisLine: { lineStyle: { color: '#475569' } },
-      axisLabel: { color: '#cbd5e1', fontSize: 11 }
+      axisLine: { lineStyle: { color: '#1C4D8D' } },
+      axisLabel: { color: '#BDE8F5', fontSize: 11 }
     },
     yAxis: {
       type: 'value',
       name: 'Temperature (°C)',
-      nameTextStyle: { color: '#94a3b8', fontSize: 10 },
-      axisLine: { lineStyle: { color: '#475569' } },
-      axisLabel: { color: '#94a3b8', fontSize: 10 },
-      splitLine: { lineStyle: { color: 'rgba(255, 255, 255, 0.08)' } }
+      nameTextStyle: { color: '#7FA9C9', fontSize: 10 },
+      axisLine: { lineStyle: { color: '#1C4D8D' } },
+      axisLabel: { color: '#7FA9C9', fontSize: 10 },
+      splitLine: { lineStyle: { color: 'rgba(73, 136, 196, 0.15)' } }
     },
     series: [
       {
@@ -44,14 +44,14 @@ export default function ModelVsObsChart({ biasData }: ModelVsObsChartProps) {
         type: 'bar',
         barWidth: '35%',
         data: [
-          { value: biasData.rawValue, itemStyle: { color: '#ef4444' } },
-          { value: biasData.correctedValue, itemStyle: { color: '#0ea5e9' } },
-          { value: biasData.observationValue, itemStyle: { color: '#10b981' } }
+          { value: biasData.rawValue, itemStyle: { color: '#1C4D8D' } },
+          { value: biasData.correctedValue, itemStyle: { color: '#4988C4' } },
+          { value: biasData.observationValue, itemStyle: { color: '#BDE8F5' } }
         ],
         label: {
           show: true,
           position: 'top',
-          color: '#e2e8f0',
+          color: '#BDE8F5',
           fontSize: 11,
           formatter: '{c} °C'
         }
@@ -60,7 +60,7 @@ export default function ModelVsObsChart({ biasData }: ModelVsObsChartProps) {
   };
 
   return (
-    <div className="w-full h-52 bg-ocean-950/60 rounded-xl border border-slate-800 p-2">
+    <div className="w-full h-52 bg-navy-darker rounded-xl border border-navy-ocean/50 p-2">
       <ReactECharts option={option} style={{ height: '100%', width: '100%' }} />
     </div>
   );

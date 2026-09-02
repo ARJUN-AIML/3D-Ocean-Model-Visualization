@@ -70,17 +70,17 @@ export default function ScientificLegend() {
   const legend = getLegendDetails();
 
   return (
-    <div className="absolute bottom-24 left-3 z-30 w-64 bg-ocean-900/85 backdrop-blur-md border border-cyan-500/20 rounded-xl p-3 shadow-panel-dark text-slate-200">
-      <div className="flex items-center justify-between text-[11px] font-semibold text-slate-300 uppercase tracking-wider mb-2">
+    <div className="absolute bottom-24 right-3 z-30 w-64 bg-navy-deep border-2 border-navy-sky rounded-xl p-3 shadow-panel text-navy-ice">
+      <div className="flex items-center justify-between text-[11px] font-heading font-semibold text-navy-ice uppercase tracking-wider mb-2">
         <span>{legend.title}</span>
-        <span className="font-mono text-cyan-400">[{legend.unit}]</span>
+        <span className="font-mono text-navy-ice font-bold">[{legend.unit}]</span>
       </div>
 
-      {/* Color Gradient Bar */}
+      {/* Scientific Color Gradient Bar (preserved as-is) */}
       <div className={`w-full h-3 rounded-md bg-gradient-to-r ${legend.gradient} shadow-inner mb-1.5`} />
 
       {/* Range Markers */}
-      <div className="flex justify-between items-center text-[10px] font-mono text-slate-400">
+      <div className="flex justify-between items-center text-[10px] font-mono text-navy-ice font-semibold">
         <span>{legend.min}</span>
         <span>{legend.mid}</span>
         <span>{legend.max}</span>

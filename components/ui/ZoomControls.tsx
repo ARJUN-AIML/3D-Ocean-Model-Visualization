@@ -8,10 +8,10 @@ export default function ZoomControls() {
   const { zoomIn, zoomOut, resetView, autoRotate, toggleAutoRotate } = useOcean();
 
   return (
-    <div className="absolute top-20 right-3 z-30 flex flex-col gap-1.5 p-1.5 bg-ocean-900/85 backdrop-blur-md border border-cyan-500/20 rounded-xl shadow-panel-dark text-slate-200">
+    <div className="absolute top-20 right-3 z-30 flex flex-col gap-1.5 p-1.5 bg-navy-deep border-2 border-navy-sky rounded-xl shadow-panel text-navy-ice">
       <button
         onClick={zoomIn}
-        className="p-2 rounded-lg bg-ocean-950/80 hover:bg-cyan-950 hover:border-cyan-400 text-slate-200 hover:text-cyan-300 transition border border-transparent"
+        className="p-2 rounded-lg bg-navy-ocean hover:bg-navy-sky hover:text-navy-deep border border-navy-sky text-navy-ice transition"
         title="Zoom In (+)"
       >
         <Plus className="w-4 h-4" />
@@ -19,20 +19,20 @@ export default function ZoomControls() {
 
       <button
         onClick={zoomOut}
-        className="p-2 rounded-lg bg-ocean-950/80 hover:bg-cyan-950 hover:border-cyan-400 text-slate-200 hover:text-cyan-300 transition border border-transparent"
+        className="p-2 rounded-lg bg-navy-ocean hover:bg-navy-sky hover:text-navy-deep border border-navy-sky text-navy-ice transition"
         title="Zoom Out (-)"
       >
         <Minus className="w-4 h-4" />
       </button>
 
-      <div className="w-full h-px bg-slate-800 my-0.5" />
+      <div className="w-full h-px bg-navy-sky my-0.5" />
 
       <button
         onClick={toggleAutoRotate}
         className={`p-2 rounded-lg transition border ${
           autoRotate
-            ? 'bg-cyan-500 text-ocean-950 border-cyan-400 font-bold shadow-glow-cyan'
-            : 'bg-ocean-950/80 hover:bg-cyan-950 hover:border-cyan-400 text-slate-200 hover:text-cyan-300 border-transparent'
+            ? 'bg-navy-sky text-navy-deep border-2 border-navy-ice font-bold shadow-md'
+            : 'bg-navy-ocean hover:bg-navy-sky hover:text-navy-deep border border-navy-sky text-navy-ice'
         }`}
         title={autoRotate ? 'Stop Globe Auto-Rotate' : 'Start Globe Auto-Rotate'}
       >
@@ -41,7 +41,7 @@ export default function ZoomControls() {
 
       <button
         onClick={resetView}
-        className="p-2 rounded-lg bg-ocean-950/80 hover:bg-cyan-950 hover:border-cyan-400 text-slate-200 hover:text-cyan-300 transition border border-transparent"
+        className="p-2 rounded-lg bg-navy-ocean hover:bg-navy-sky hover:text-navy-deep border border-navy-sky text-navy-ice transition"
         title="Reset Orbit View"
       >
         <RotateCcw className="w-4 h-4" />
