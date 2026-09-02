@@ -1,0 +1,57 @@
+@import 'cesium/Build/Cesium/Widgets/widgets.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #__next {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #030712;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Cesium Fullview & Smooth Render Fixes */
+.cesium-viewer, 
+.cesium-viewer-cesiumWidgetContainer, 
+.cesium-widget, 
+.cesium-widget canvas {
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  outline: none !important;
+}
+
+.cesium-viewer-bottom,
+.cesium-viewer-animationContainer,
+.cesium-viewer-timelineContainer,
+.cesium-credit-wrapper {
+  display: none !important; /* Hide native Cesium toolbars to preserve scientific UI */
+}
+
+/* Custom Scrollbar for Drawer & Panels */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(10, 17, 32, 0.6);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(56, 189, 248, 0.6);
+}
