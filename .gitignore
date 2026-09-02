@@ -21,3 +21,16 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.log
+
+# Heavy Data Files Exclusions
+*.nc
+*.tar
+*.tar.gz
+*.grib*
+data/argo/*.csv
+data/hycom/*.nc
+data/ww3/*.nc
+data/raw/
+data/training/*.csv
+copernicus_obs_metadata.txt
+

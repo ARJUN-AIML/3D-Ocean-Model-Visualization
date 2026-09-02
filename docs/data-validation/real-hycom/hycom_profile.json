@@ -1,0 +1,536 @@
+{
+  "file_verification": {
+    "exists": true,
+    "size_bytes": 10581647292,
+    "size_gb": 9.855,
+    "format": "NetCDF Classic (CDF)",
+    "valid_format": true,
+    "appears_complete": true
+  },
+  "dimensions": {
+    "LAT": 1384,
+    "bnds": 2,
+    "TIME": 28,
+    "LON": 1665,
+    "DEPTH": 6
+  },
+  "time_coverage": {
+    "dim_name": "TIME",
+    "size": 28,
+    "units": "unknown",
+    "calendar": "unknown",
+    "first": "2026-08-30 06:00:00",
+    "last": "2026-09-06 00:00:00",
+    "interval_hours": 6.0,
+    "monotonic": true
+  },
+  "depth_coverage": {
+    "dim_name": "DEPTH",
+    "size": 6,
+    "levels": [
+      0.0,
+      10.0,
+      50.0,
+      100.0,
+      250.0,
+      500.0
+    ],
+    "min": 0.0,
+    "max": 500.0,
+    "positive": "down",
+    "attrs": {
+      "positive": "down",
+      "point_spacing": "uneven",
+      "axis": "Z",
+      "standard_name": "depth",
+      "bounds": "DEPTH_bnds"
+    }
+  },
+  "latitude": {
+    "dim_name": "LAT",
+    "size": 1384,
+    "min": -44.929962158203125,
+    "max": 30.9540958404541,
+    "mean_spacing_deg": 0.054869,
+    "min_spacing_deg": 0.042492,
+    "max_spacing_deg": 0.06,
+    "uniform": false
+  },
+  "longitude": {
+    "dim_name": "LON",
+    "size": 1665,
+    "min": 20.0,
+    "max": 119.83999633789062,
+    "mean_spacing_deg": 0.06,
+    "uniform": true
+  },
+  "variables": {
+    "LAT_bnds": {
+      "dimensions": [
+        "LAT",
+        "bnds"
+      ],
+      "shape": [
+        1384,
+        2
+      ],
+      "dtype": "float32",
+      "units": "not specified",
+      "long_name": "LAT_bnds",
+      "standard_name": "N/A",
+      "fill_value": "N/A",
+      "chunking": "not chunked",
+      "compression": "none"
+    },
+    "SSH": {
+      "dimensions": [
+        "TIME",
+        "LAT",
+        "LON"
+      ],
+      "shape": [
+        28,
+        1384,
+        1665
+      ],
+      "dtype": "float32",
+      "units": "m",
+      "long_name": "ssh",
+      "standard_name": "N/A",
+      "fill_value": "N/A",
+      "chunking": "not chunked",
+      "compression": "none"
+    },
+    "DEPTH_bnds": {
+      "dimensions": [
+        "DEPTH",
+        "bnds"
+      ],
+      "shape": [
+        6,
+        2
+      ],
+      "dtype": "float32",
+      "units": "not specified",
+      "long_name": "DEPTH_bnds",
+      "standard_name": "N/A",
+      "fill_value": "N/A",
+      "chunking": "not chunked",
+      "compression": "none"
+    },
+    "TEMP": {
+      "dimensions": [
+        "TIME",
+        "DEPTH",
+        "LAT",
+        "LON"
+      ],
+      "shape": [
+        28,
+        6,
+        1384,
+        1665
+      ],
+      "dtype": "float32",
+      "units": "not specified",
+      "long_name": "TEMP",
+      "standard_name": "N/A",
+      "fill_value": "N/A",
+      "chunking": "not chunked",
+      "compression": "none"
+    },
+    "SALN": {
+      "dimensions": [
+        "TIME",
+        "DEPTH",
+        "LAT",
+        "LON"
+      ],
+      "shape": [
+        28,
+        6,
+        1384,
+        1665
+      ],
+      "dtype": "float32",
+      "units": "not specified",
+      "long_name": "SALN",
+      "standard_name": "N/A",
+      "fill_value": "N/A",
+      "chunking": "not chunked",
+      "compression": "none"
+    },
+    "UVEL": {
+      "dimensions": [
+        "TIME",
+        "DEPTH",
+        "LAT",
+        "LON"
+      ],
+      "shape": [
+        28,
+        6,
+        1384,
+        1665
+      ],
+      "dtype": "float32",
+      "units": "m/s",
+      "long_name": "eastward current",
+      "standard_name": "N/A",
+      "fill_value": "N/A",
+      "chunking": "not chunked",
+      "compression": "none"
+    },
+    "VVEL": {
+      "dimensions": [
+        "TIME",
+        "DEPTH",
+        "LAT",
+        "LON"
+      ],
+      "shape": [
+        28,
+        6,
+        1384,
+        1665
+      ],
+      "dtype": "float32",
+      "units": "m/s",
+      "long_name": "northward current",
+      "standard_name": "N/A",
+      "fill_value": "N/A",
+      "chunking": "not chunked",
+      "compression": "none"
+    },
+    "TCHP": {
+      "dimensions": [
+        "TIME",
+        "LAT",
+        "LON"
+      ],
+      "shape": [
+        28,
+        1384,
+        1665
+      ],
+      "dtype": "float64",
+      "units": "'KJ/cm2'",
+      "long_name": "'Tropical Cyclone Heat Potential'",
+      "standard_name": "N/A",
+      "fill_value": "N/A",
+      "chunking": "not chunked",
+      "compression": "none"
+    },
+    "MLD": {
+      "dimensions": [
+        "TIME",
+        "LAT",
+        "LON"
+      ],
+      "shape": [
+        28,
+        1384,
+        1665
+      ],
+      "dtype": "float64",
+      "units": "not specified",
+      "long_name": "'Mixed Layer Depth (Density)(m)'",
+      "standard_name": "N/A",
+      "fill_value": "N/A",
+      "chunking": "not chunked",
+      "compression": "none"
+    },
+    "SALNA": {
+      "dimensions": [
+        "TIME",
+        "DEPTH",
+        "LAT",
+        "LON"
+      ],
+      "shape": [
+        28,
+        6,
+        1384,
+        1665
+      ],
+      "dtype": "float32",
+      "units": "not specified",
+      "long_name": "SALNA",
+      "standard_name": "N/A",
+      "fill_value": "N/A",
+      "chunking": "not chunked",
+      "compression": "none"
+    },
+    "TEMP_CT": {
+      "dimensions": [
+        "TIME",
+        "DEPTH",
+        "LAT",
+        "LON"
+      ],
+      "shape": [
+        28,
+        6,
+        1384,
+        1665
+      ],
+      "dtype": "float32",
+      "units": "not specified",
+      "long_name": "TEMP_CT",
+      "standard_name": "N/A",
+      "fill_value": "N/A",
+      "chunking": "not chunked",
+      "compression": "none"
+    }
+  },
+  "data_quality": {
+    "TEMP": {
+      "sample_slice": "t=0, depth=0 (surface)",
+      "sample_shape": [
+        1384,
+        1665
+      ],
+      "read_time_sec": 0.024,
+      "total_cells": 2304360,
+      "missing_count": 755157,
+      "missing_pct": 32.77,
+      "valid_min": 4.023205,
+      "valid_max": 36.007767,
+      "valid_mean": 22.360426,
+      "valid_std": 6.59555,
+      "fill_value": "None"
+    },
+    "SALN": {
+      "sample_slice": "t=0, depth=0 (surface)",
+      "sample_shape": [
+        1384,
+        1665
+      ],
+      "read_time_sec": 0.026,
+      "total_cells": 2304360,
+      "missing_count": 755157,
+      "missing_pct": 32.77,
+      "valid_min": 2.530107,
+      "valid_max": 42.16523,
+      "valid_mean": 34.912056,
+      "valid_std": 1.110184,
+      "fill_value": "None"
+    },
+    "UVEL": {
+      "sample_slice": "t=0, depth=0 (surface)",
+      "sample_shape": [
+        1384,
+        1665
+      ],
+      "read_time_sec": 0.025,
+      "total_cells": 2304360,
+      "missing_count": 755157,
+      "missing_pct": 32.77,
+      "valid_min": -2.419497,
+      "valid_max": 2.61024,
+      "valid_mean": 0.0178,
+      "valid_std": 0.337505,
+      "fill_value": "None"
+    },
+    "VVEL": {
+      "sample_slice": "t=0, depth=0 (surface)",
+      "sample_shape": [
+        1384,
+        1665
+      ],
+      "read_time_sec": 0.026,
+      "total_cells": 2304360,
+      "missing_count": 755157,
+      "missing_pct": 32.77,
+      "valid_min": -2.831235,
+      "valid_max": 3.150899,
+      "valid_mean": 0.013404,
+      "valid_std": 0.27903,
+      "fill_value": "None"
+    },
+    "SSH": {
+      "sample_slice": "t=0",
+      "sample_shape": [
+        1384,
+        1665
+      ],
+      "read_time_sec": 0.017,
+      "total_cells": 2304360,
+      "missing_count": 755157,
+      "missing_pct": 32.77,
+      "valid_min": -0.862018,
+      "valid_max": 1.893126,
+      "valid_mean": 0.398182,
+      "valid_std": 0.268031,
+      "fill_value": "None"
+    },
+    "MLD": {
+      "sample_slice": "t=0",
+      "sample_shape": [
+        1384,
+        1665
+      ],
+      "read_time_sec": 0.043,
+      "total_cells": 2304360,
+      "missing_count": 1140053,
+      "missing_pct": 49.47,
+      "valid_min": 0.408495,
+      "valid_max": 199.99993,
+      "valid_mean": 85.863487,
+      "valid_std": 40.270534,
+      "fill_value": "None"
+    },
+    "TCHP": {
+      "sample_slice": "t=0",
+      "sample_shape": [
+        1384,
+        1665
+      ],
+      "read_time_sec": 0.045,
+      "total_cells": 2304360,
+      "missing_count": 755157,
+      "missing_pct": 32.77,
+      "valid_min": 0.0,
+      "valid_max": 263.57426,
+      "valid_mean": 30.297375,
+      "valid_std": 46.471112,
+      "fill_value": "None"
+    },
+    "SALNA": {
+      "sample_slice": "t=0, depth=0 (surface)",
+      "sample_shape": [
+        1384,
+        1665
+      ],
+      "read_time_sec": 0.025,
+      "total_cells": 2304360,
+      "missing_count": 755157,
+      "missing_pct": 32.77,
+      "valid_min": 2.542067,
+      "valid_max": 42.364056,
+      "valid_mean": 35.076992,
+      "valid_std": 1.115362,
+      "fill_value": "None"
+    },
+    "TEMP_CT": {
+      "sample_slice": "t=0, depth=0 (surface)",
+      "sample_shape": [
+        1384,
+        1665
+      ],
+      "read_time_sec": 0.027,
+      "total_cells": 2304360,
+      "missing_count": 755157,
+      "missing_pct": 32.77,
+      "valid_min": 4.029638,
+      "valid_max": 35.701389,
+      "valid_mean": 22.363726,
+      "valid_std": 6.611041,
+      "fill_value": "None"
+    }
+  },
+  "compatibility": {
+    "coordinates": {
+      "LON": {
+        "lower": "lon",
+        "mapped_to": "longitude",
+        "status": "MAPPED"
+      },
+      "LAT": {
+        "lower": "lat",
+        "mapped_to": "latitude",
+        "status": "MAPPED"
+      },
+      "TIME": {
+        "lower": "time",
+        "mapped_to": "time",
+        "status": "MAPPED"
+      },
+      "DEPTH": {
+        "lower": "depth",
+        "mapped_to": "depth",
+        "status": "MAPPED"
+      }
+    },
+    "variables": {
+      "LAT_bnds": {
+        "lower": "lat_bnds",
+        "mapped_to": null,
+        "status": "UNMAPPED"
+      },
+      "SSH": {
+        "lower": "ssh",
+        "mapped_to": null,
+        "status": "UNMAPPED"
+      },
+      "DEPTH_bnds": {
+        "lower": "depth_bnds",
+        "mapped_to": null,
+        "status": "UNMAPPED"
+      },
+      "TEMP": {
+        "lower": "temp",
+        "mapped_to": "temperature",
+        "status": "MAPPED"
+      },
+      "SALN": {
+        "lower": "saln",
+        "mapped_to": null,
+        "status": "UNMAPPED"
+      },
+      "UVEL": {
+        "lower": "uvel",
+        "mapped_to": null,
+        "status": "UNMAPPED"
+      },
+      "VVEL": {
+        "lower": "vvel",
+        "mapped_to": null,
+        "status": "UNMAPPED"
+      },
+      "TCHP": {
+        "lower": "tchp",
+        "mapped_to": null,
+        "status": "UNMAPPED"
+      },
+      "MLD": {
+        "lower": "mld",
+        "mapped_to": null,
+        "status": "UNMAPPED"
+      },
+      "SALNA": {
+        "lower": "salna",
+        "mapped_to": null,
+        "status": "UNMAPPED"
+      },
+      "TEMP_CT": {
+        "lower": "temp_ct",
+        "mapped_to": null,
+        "status": "UNMAPPED"
+      }
+    },
+    "issues": [
+      "CRITICAL: Variable 'SALN' (lower: 'saln') has no alias in canonical.py",
+      "CRITICAL: Variable 'UVEL' (lower: 'uvel') has no alias in canonical.py",
+      "CRITICAL: Variable 'VVEL' (lower: 'vvel') has no alias in canonical.py",
+      "WARNING: DatasetManager.list_datasets() scans data/raw/*.* but file is in data/raw/model/. Subdirectory not scanned.",
+      "WARNING: DatasetManager.load_dataset() looks for data/raw/{id}.nc \u2014 will not find data/raw/model/{id}.nc",
+      "WARNING: validator.py does .values on full data variables (line 153/168) \u2014 would load 9GB into RAM on this dataset.",
+      "WARNING: profiler.py does .values on every data variable (line 77) \u2014 would load 9GB into RAM."
+    ]
+  },
+  "dataset_manager_test": {
+    "normalize_success": true,
+    "normalize_time": 0.001,
+    "renamed": {
+      "LAT\u2192latitude": true,
+      "LON\u2192longitude": true,
+      "DEPTH\u2192depth": true,
+      "TIME\u2192time": true,
+      "TEMP\u2192temperature": true,
+      "SALN\u2192salinity": false,
+      "UVEL\u2192u": false,
+      "VVEL\u2192v": false
+    }
+  }
+}

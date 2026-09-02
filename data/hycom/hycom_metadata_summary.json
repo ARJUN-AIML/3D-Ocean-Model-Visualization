@@ -1,0 +1,106 @@
+{
+  "dataset_id": "RSMC_hycom_20260831.nc",
+  "source": "INCOIS RSMC HYCOM Model Output",
+  "conventions": "CF-1.6",
+  "file_size_mb": 10091.45,
+  "dimensions": {
+    "TIME": 28,
+    "DEPTH": 6,
+    "LAT": 1384,
+    "LON": 1665
+  },
+  "coordinates": {
+    "TIME": {
+      "standard_name": "time",
+      "min": "2026-08-30T06:00:00Z",
+      "max": "2026-09-06T00:00:00Z",
+      "size": 28,
+      "interval": "6-hourly"
+    },
+    "DEPTH": {
+      "standard_name": "depth",
+      "units": "m",
+      "values": [0.0, 10.0, 50.0, 100.0, 250.0, 500.0],
+      "size": 6
+    },
+    "LAT": {
+      "standard_name": "latitude",
+      "units": "degrees_north",
+      "min": -44.929962,
+      "max": 30.954096,
+      "size": 1384,
+      "resolution_deg": 0.054869
+    },
+    "LON": {
+      "standard_name": "longitude",
+      "units": "degrees_east",
+      "min": 20.0,
+      "max": 119.839996,
+      "size": 1665,
+      "resolution_deg": 0.060000
+    }
+  },
+  "variables": {
+    "TEMP": {
+      "long_name": "Water Temperature",
+      "dimensions": ["TIME", "DEPTH", "LAT", "LON"],
+      "units": "°C",
+      "min": 2.8073,
+      "max": 36.0078,
+      "classification": "REQUIRED"
+    },
+    "SALN": {
+      "long_name": "Water Salinity",
+      "dimensions": ["TIME", "DEPTH", "LAT", "LON"],
+      "units": "PSU",
+      "min": 2.5301,
+      "max": 42.1652,
+      "classification": "REQUIRED"
+    },
+    "SSH": {
+      "long_name": "Sea Surface Height",
+      "dimensions": ["TIME", "LAT", "LON"],
+      "units": "m",
+      "min": -0.8620,
+      "max": 1.8931,
+      "classification": "USEFUL"
+    },
+    "UVEL": {
+      "long_name": "Eastward Current Velocity",
+      "dimensions": ["TIME", "DEPTH", "LAT", "LON"],
+      "units": "m/s",
+      "min": -2.4195,
+      "max": 2.6102,
+      "classification": "USEFUL"
+    },
+    "VVEL": {
+      "long_name": "Northward Current Velocity",
+      "dimensions": ["TIME", "DEPTH", "LAT", "LON"],
+      "units": "m/s",
+      "min": -2.8616,
+      "max": 3.1509,
+      "classification": "USEFUL"
+    },
+    "MLD": {
+      "long_name": "Mixed Layer Depth (Density)",
+      "dimensions": ["TIME", "LAT", "LON"],
+      "units": "m",
+      "min": 0.4085,
+      "max": 199.9999,
+      "classification": "USEFUL"
+    },
+    "TCHP": {
+      "long_name": "Tropical Cyclone Heat Potential",
+      "dimensions": ["TIME", "LAT", "LON"],
+      "units": "kJ/cm²",
+      "min": 0.0,
+      "max": 263.5743,
+      "classification": "USEFUL"
+    }
+  },
+  "argo_compatibility": {
+    "spatial_overlap": true,
+    "temporal_overlap": false,
+    "time_gap": "Real-time 2026 forecast vs 2020-2025 historical Argo data"
+  }
+}
