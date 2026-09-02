@@ -10,14 +10,23 @@ build/
 # Pytest
 .pytest_cache/
 
-# IDE
+# Node & Next.js
+node_modules/
+.next/
+out/
+*.log
+
+# Cesium static copies
+frontend/public/cesium/
+
+# IDE & OS
 .vscode/
 .idea/
-
-# OS
 Thumbs.db
 .DS_Store
 
-# Temporary files
+# Temporary & artifacts
 *.tmp
 *.log
+artifacts/
+.gemini/

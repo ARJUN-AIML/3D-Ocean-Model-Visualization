@@ -1,0 +1,2087 @@
+[
+  {
+    "platform_id": "ARGO_2900000",
+    "instrument_type": "argo",
+    "latitude": 12.4908,
+    "longitude": 88.275,
+    "time": "2026-08-27T09:24:25.659435",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 27.222765780332487,
+        "salinity": 33.04783532770341,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 26.60983739212617,
+        "salinity": 33.15157729272098,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 22.914419726748893,
+        "salinity": 32.921224528923275,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 19.280731896278848,
+        "salinity": 32.86138757433793,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 13.35615817754275,
+        "salinity": 33.14255545235954,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 6.520561519379063,
+        "salinity": 32.77141860035762,
+        "chlorophyll": null
+      },
+      {
+        "depth": 1000.0,
+        "temperature": 3.342457446574151,
+        "salinity": 32.888638974432126,
+        "chlorophyll": null
+      },
+      {
+        "depth": 2000.0,
+        "temperature": 2.8331186938009805,
+        "salinity": 32.67905690158857,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "ARGO_2900001",
+    "instrument_type": "argo",
+    "latitude": 20.7035,
+    "longitude": 61.9886,
+    "time": "2026-08-26T02:02:59.132874",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 26.707622780639884,
+        "salinity": 36.01663838845648,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 25.595311326647522,
+        "salinity": 36.056354702751854,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 22.25246223970203,
+        "salinity": 35.95624593753101,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 18.616132936586993,
+        "salinity": 36.27784172767634,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 13.348903776458624,
+        "salinity": 35.841343360656616,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 5.865069129093987,
+        "salinity": 35.816873452504346,
+        "chlorophyll": null
+      },
+      {
+        "depth": 1000.0,
+        "temperature": 2.844667513296357,
+        "salinity": 35.706049481418034,
+        "chlorophyll": null
+      },
+      {
+        "depth": 2000.0,
+        "temperature": 2.0198907839301827,
+        "salinity": 36.02952918538037,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "ARGO_2900002",
+    "instrument_type": "argo",
+    "latitude": 24.3917,
+    "longitude": 82.1296,
+    "time": "2026-08-28T15:17:16.251307",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 26.60332417459017,
+        "salinity": 33.13226415584229,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 25.335734519092348,
+        "salinity": 32.762505867969466,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 22.30099315019568,
+        "salinity": 32.91927875075056,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 18.134836199109532,
+        "salinity": 32.867911310092936,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 12.774586140278243,
+        "salinity": 33.0201643323942,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 5.509909733551978,
+        "salinity": 33.133162268939,
+        "chlorophyll": null
+      },
+      {
+        "depth": 1000.0,
+        "temperature": 2.7209808308778864,
+        "salinity": 33.11324966958671,
+        "chlorophyll": null
+      },
+      {
+        "depth": 2000.0,
+        "temperature": 2.005091957434175,
+        "salinity": 32.906478390752255,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "ARGO_2900003",
+    "instrument_type": "argo",
+    "latitude": 7.3174,
+    "longitude": 85.2086,
+    "time": "2026-08-26T17:45:17.748947",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 27.79481594529847,
+        "salinity": 32.97215115350043,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 26.677367020490202,
+        "salinity": 32.8205690063879,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 23.676644410768894,
+        "salinity": 33.20343600428562,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 19.81944810223787,
+        "salinity": 33.1505299346838,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 14.51357813189363,
+        "salinity": 32.90323203680923,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 6.820672845433907,
+        "salinity": 33.230705484969896,
+        "chlorophyll": null
+      },
+      {
+        "depth": 1000.0,
+        "temperature": 3.8543861477562946,
+        "salinity": 33.2346965483721,
+        "chlorophyll": null
+      },
+      {
+        "depth": 2000.0,
+        "temperature": 2.7678920631209687,
+        "salinity": 33.12328537565628,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "ARGO_2900004",
+    "instrument_type": "argo",
+    "latitude": 5.5084,
+    "longitude": 58.7762,
+    "time": "2026-08-23T04:31:32.889860",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 27.7046417825616,
+        "salinity": 36.15637374260091,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 27.324553779097826,
+        "salinity": 36.00285004965932,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 23.484628734201628,
+        "salinity": 35.77574191937785,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 19.78485594290813,
+        "salinity": 36.111556692565685,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 14.514848662653469,
+        "salinity": 35.93596968089404,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 7.00040591938766,
+        "salinity": 36.17372799793981,
+        "chlorophyll": null
+      },
+      {
+        "depth": 1000.0,
+        "temperature": 4.072341767497507,
+        "salinity": 36.04717693437948,
+        "chlorophyll": null
+      },
+      {
+        "depth": 2000.0,
+        "temperature": 3.9105137649805037,
+        "salinity": 36.026332994093224,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "ARGO_2900005",
+    "instrument_type": "argo",
+    "latitude": 22.9218,
+    "longitude": 66.1301,
+    "time": "2026-08-23T15:50:50.917675",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 26.568226881839372,
+        "salinity": 35.78047275778018,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 25.779625248620473,
+        "salinity": 36.03915829082698,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 22.22643573469358,
+        "salinity": 35.96481192999373,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 18.23525236248297,
+        "salinity": 35.936903201585196,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 13.089134911862647,
+        "salinity": 35.87965840961676,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 5.44164693150292,
+        "salinity": 36.06060762852218,
+        "chlorophyll": null
+      },
+      {
+        "depth": 1000.0,
+        "temperature": 3.086533548199033,
+        "salinity": 36.026186671924776,
+        "chlorophyll": null
+      },
+      {
+        "depth": 2000.0,
+        "temperature": 2.2388603521867143,
+        "salinity": 35.98883311263508,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "ARGO_2900006",
+    "instrument_type": "argo",
+    "latitude": 24.2489,
+    "longitude": 63.8124,
+    "time": "2026-08-25T23:36:13.625455",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 26.29195136948371,
+        "salinity": 35.851112073089524,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 25.625012507961955,
+        "salinity": 35.9351086079178,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 21.954192202894056,
+        "salinity": 36.00059059566471,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 18.602363980824165,
+        "salinity": 35.96114570328917,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 12.924966647061199,
+        "salinity": 35.93677526694902,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 5.460754008436294,
+        "salinity": 35.99889297750831,
+        "chlorophyll": null
+      },
+      {
+        "depth": 1000.0,
+        "temperature": 2.700641690543213,
+        "salinity": 35.82753111337585,
+        "chlorophyll": null
+      },
+      {
+        "depth": 2000.0,
+        "temperature": 2.0,
+        "salinity": 36.115971128383386,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "ARGO_2900007",
+    "instrument_type": "argo",
+    "latitude": 19.5643,
+    "longitude": 67.8724,
+    "time": "2026-08-26T19:03:07.342580",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 27.081568115671093,
+        "salinity": 36.328568343871495,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 25.72656102017027,
+        "salinity": 35.91505534055958,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 22.518670133903488,
+        "salinity": 35.92447865188257,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 18.470029112327655,
+        "salinity": 36.0102844462209,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 13.177837534661426,
+        "salinity": 36.07103886459528,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 5.5207122229595855,
+        "salinity": 36.23249016075263,
+        "chlorophyll": null
+      },
+      {
+        "depth": 1000.0,
+        "temperature": 2.6877736719109553,
+        "salinity": 35.95169077256915,
+        "chlorophyll": null
+      },
+      {
+        "depth": 2000.0,
+        "temperature": 2.6464519809470546,
+        "salinity": 35.815370352534906,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "ARGO_2900008",
+    "instrument_type": "argo",
+    "latitude": 21.3444,
+    "longitude": 74.432,
+    "time": "2026-08-26T04:16:10.859820",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 26.71132174022083,
+        "salinity": 35.96911999243567,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 25.471775376989022,
+        "salinity": 36.17860908841705,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 22.67619713365473,
+        "salinity": 35.869928076592565,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 18.869695818929003,
+        "salinity": 36.18256061954702,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 13.357576167924702,
+        "salinity": 36.12711021488649,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 5.651867171972933,
+        "salinity": 35.81747176614611,
+        "chlorophyll": null
+      },
+      {
+        "depth": 1000.0,
+        "temperature": 3.0035144805322602,
+        "salinity": 36.19876584922713,
+        "chlorophyll": null
+      },
+      {
+        "depth": 2000.0,
+        "temperature": 2.484288580281678,
+        "salinity": 35.85682541070579,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "ARGO_2900009",
+    "instrument_type": "argo",
+    "latitude": 9.745,
+    "longitude": 66.389,
+    "time": "2026-08-27T11:29:41.144413",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 27.961245492316202,
+        "salinity": 36.061917139040474,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 26.965257759235662,
+        "salinity": 36.28451894739809,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 23.217957881414957,
+        "salinity": 35.886939575346375,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 19.420863980471903,
+        "salinity": 35.877628457255184,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 14.209685653523522,
+        "salinity": 36.051172796222495,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 6.605288599134636,
+        "salinity": 36.1240774873554,
+        "chlorophyll": null
+      },
+      {
+        "depth": 1000.0,
+        "temperature": 3.6723850857485867,
+        "salinity": 36.2180301115736,
+        "chlorophyll": null
+      },
+      {
+        "depth": 2000.0,
+        "temperature": 3.1624560860792434,
+        "salinity": 36.40802537498844,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "ARGO_2900010",
+    "instrument_type": "argo",
+    "latitude": 8.9049,
+    "longitude": 80.2858,
+    "time": "2026-08-24T16:25:52.392689",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 27.798106235640635,
+        "salinity": 32.979409227435326,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 26.79591938153463,
+        "salinity": 33.11105112269216,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 23.233399111847515,
+        "salinity": 33.11655746923554,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 19.97184513948287,
+        "salinity": 32.94867874310919,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 14.064659185592188,
+        "salinity": 32.923055202354654,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 6.780852968911128,
+        "salinity": 33.01387183073266,
+        "chlorophyll": null
+      },
+      {
+        "depth": 1000.0,
+        "temperature": 3.89386310694737,
+        "salinity": 33.264440620845484,
+        "chlorophyll": null
+      },
+      {
+        "depth": 2000.0,
+        "temperature": 3.353568484643024,
+        "salinity": 32.878659466291445,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "ARGO_2900011",
+    "instrument_type": "argo",
+    "latitude": 24.8011,
+    "longitude": 59.9029,
+    "time": "2026-08-26T02:38:22.091785",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 26.60536067992025,
+        "salinity": 36.08411767895524,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 25.826017909858916,
+        "salinity": 36.15807030780523,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 21.73039994825446,
+        "salinity": 35.859326244012735,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 18.567513784508506,
+        "salinity": 36.07706789263683,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 13.153235382281618,
+        "salinity": 36.57790972359821,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 5.4743509068034815,
+        "salinity": 36.17033484602709,
+        "chlorophyll": null
+      },
+      {
+        "depth": 1000.0,
+        "temperature": 2.7031474334804693,
+        "salinity": 36.09770868769587,
+        "chlorophyll": null
+      },
+      {
+        "depth": 2000.0,
+        "temperature": 2.0,
+        "salinity": 36.11384538307399,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "ARGO_2900012",
+    "instrument_type": "argo",
+    "latitude": 12.5117,
+    "longitude": 58.2894,
+    "time": "2026-08-26T11:16:20.425092",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 27.489158240266182,
+        "salinity": 35.91980058872249,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 26.09128440876288,
+        "salinity": 36.053595681290496,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 22.95433777483917,
+        "salinity": 36.012029806881124,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 19.198628335241946,
+        "salinity": 35.94977741289079,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 14.397721931931239,
+        "salinity": 36.01928265001066,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 6.452175801338768,
+        "salinity": 35.80936922896859,
+        "chlorophyll": null
+      },
+      {
+        "depth": 1000.0,
+        "temperature": 4.045059417898195,
+        "salinity": 36.27651206374808,
+        "chlorophyll": null
+      },
+      {
+        "depth": 2000.0,
+        "temperature": 3.348144982897628,
+        "salinity": 36.12431489664073,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "ARGO_2900013",
+    "instrument_type": "argo",
+    "latitude": 24.517,
+    "longitude": 73.0705,
+    "time": "2026-08-24T22:30:20.635573",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 26.37319005666785,
+        "salinity": 36.12786500021944,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 25.379847747483687,
+        "salinity": 35.982789533779965,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 22.22378694301561,
+        "salinity": 36.129863279125516,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 18.161403698969163,
+        "salinity": 35.94982481462386,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 12.928459965941633,
+        "salinity": 35.90200061511394,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 5.79571467222723,
+        "salinity": 36.06074725664414,
+        "chlorophyll": null
+      },
+      {
+        "depth": 1000.0,
+        "temperature": 2.172148837050173,
+        "salinity": 36.137679292058216,
+        "chlorophyll": null
+      },
+      {
+        "depth": 2000.0,
+        "temperature": 2.5773945564967153,
+        "salinity": 36.154869789082674,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "ARGO_2900014",
+    "instrument_type": "argo",
+    "latitude": 13.392,
+    "longitude": 63.6706,
+    "time": "2026-08-25T03:15:36.236613",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 27.369291909813867,
+        "salinity": 36.28080085207085,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 26.463120624122567,
+        "salinity": 35.86011125151584,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 22.663807731906125,
+        "salinity": 35.984232224288036,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 18.852740635099284,
+        "salinity": 35.80497107376098,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 14.322966433952235,
+        "salinity": 36.198489571072685,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 6.21225130277762,
+        "salinity": 35.93015028431182,
+        "chlorophyll": null
+      },
+      {
+        "depth": 1000.0,
+        "temperature": 3.392000278466237,
+        "salinity": 36.352199539267545,
+        "chlorophyll": null
+      },
+      {
+        "depth": 2000.0,
+        "temperature": 3.0381026116917798,
+        "salinity": 36.136460726243975,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "ARGO_2900015",
+    "instrument_type": "argo",
+    "latitude": 8.2587,
+    "longitude": 57.4699,
+    "time": "2026-08-26T20:30:30.153822",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 27.856755437917215,
+        "salinity": 35.94220296047074,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 26.907025512214442,
+        "salinity": 36.09931960117816,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 23.7947125711166,
+        "salinity": 35.814327675175974,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 20.29540438820694,
+        "salinity": 35.70718683007163,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 14.309918263782745,
+        "salinity": 36.088247580972684,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 6.725267322900482,
+        "salinity": 35.90659507202691,
+        "chlorophyll": null
+      },
+      {
+        "depth": 1000.0,
+        "temperature": 3.736007506854383,
+        "salinity": 35.926049859801175,
+        "chlorophyll": null
+      },
+      {
+        "depth": 2000.0,
+        "temperature": 3.2001825618172717,
+        "salinity": 36.127440314553155,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "ARGO_2900016",
+    "instrument_type": "argo",
+    "latitude": 7.3633,
+    "longitude": 79.3858,
+    "time": "2026-08-26T18:34:03.971771",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 28.00143975379097,
+        "salinity": 33.08719712010536,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 26.792852320720993,
+        "salinity": 33.13151319749285,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 23.607773978832174,
+        "salinity": 32.893480806310876,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 19.386859500695568,
+        "salinity": 32.816914484357724,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 14.252195214631975,
+        "salinity": 33.174290597662015,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 7.114865659062192,
+        "salinity": 32.93407231867886,
+        "chlorophyll": null
+      },
+      {
+        "depth": 1000.0,
+        "temperature": 3.757690590386516,
+        "salinity": 33.03924345839587,
+        "chlorophyll": null
+      },
+      {
+        "depth": 2000.0,
+        "temperature": 3.422191737457269,
+        "salinity": 33.13964011259611,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "ARGO_2900017",
+    "instrument_type": "argo",
+    "latitude": 21.5291,
+    "longitude": 66.2017,
+    "time": "2026-08-28T08:57:19.241652",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 26.858709642349726,
+        "salinity": 35.980478541844846,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 25.84125830470771,
+        "salinity": 36.08927355381554,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 22.1320163338298,
+        "salinity": 36.31385809135282,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 18.44900483672585,
+        "salinity": 35.81787170808184,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 13.575755393474559,
+        "salinity": 36.11874940409444,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 5.7494124477876625,
+        "salinity": 36.094251826389645,
+        "chlorophyll": null
+      },
+      {
+        "depth": 1000.0,
+        "temperature": 2.7233395137898744,
+        "salinity": 35.865411844277126,
+        "chlorophyll": null
+      },
+      {
+        "depth": 2000.0,
+        "temperature": 2.304838028159657,
+        "salinity": 35.89842574327319,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "ARGO_2900018",
+    "instrument_type": "argo",
+    "latitude": 13.8306,
+    "longitude": 86.0696,
+    "time": "2026-08-25T02:31:54.342507",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 27.547011533171453,
+        "salinity": 33.203682118215,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 26.324566605308874,
+        "salinity": 33.03057340912912,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 23.092231948866782,
+        "salinity": 33.13088123871457,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 19.60498091027799,
+        "salinity": 32.9283927404137,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 13.73605395784842,
+        "salinity": 33.204016704937224,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 5.699996653356573,
+        "salinity": 33.235504842081404,
+        "chlorophyll": null
+      },
+      {
+        "depth": 1000.0,
+        "temperature": 3.2667032900575097,
+        "salinity": 32.99931557565146,
+        "chlorophyll": null
+      },
+      {
+        "depth": 2000.0,
+        "temperature": 2.7311843819061705,
+        "salinity": 32.99277067716963,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "ARGO_2900019",
+    "instrument_type": "argo",
+    "latitude": 7.3764,
+    "longitude": 59.1134,
+    "time": "2026-08-26T21:29:10.620617",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 28.03972796253138,
+        "salinity": 36.22991083695039,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 26.92204255608879,
+        "salinity": 36.06025675831484,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 23.641330782309417,
+        "salinity": 35.93981692921712,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 19.888755582296852,
+        "salinity": 36.00188886011727,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 14.442869979480221,
+        "salinity": 35.88404853242168,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 6.731733316832831,
+        "salinity": 36.074699743686814,
+        "chlorophyll": null
+      },
+      {
+        "depth": 1000.0,
+        "temperature": 4.221410388693835,
+        "salinity": 36.14389062391278,
+        "chlorophyll": null
+      },
+      {
+        "depth": 2000.0,
+        "temperature": 3.9564057827325865,
+        "salinity": 35.88489786556679,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "GLIDER_IN_500",
+    "instrument_type": "glider",
+    "latitude": 13.8431,
+    "longitude": 83.0232,
+    "time": "2026-08-23T06:32:39.403569",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 27.370362163335617,
+        "salinity": 33.29763091264811,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 26.141319917878967,
+        "salinity": 33.27840064109142,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 22.919907209221254,
+        "salinity": 33.06449420444821,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 19.52190975913828,
+        "salinity": 33.0189868675004,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 13.518566867920605,
+        "salinity": 33.23624764588053,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 6.322532491823888,
+        "salinity": 33.297052382001326,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "GLIDER_IN_501",
+    "instrument_type": "glider",
+    "latitude": 9.6262,
+    "longitude": 83.2185,
+    "time": "2026-08-27T22:26:43.306731",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 27.46585980711996,
+        "salinity": 33.38314587658544,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 27.005135731900264,
+        "salinity": 33.15308243478953,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 22.946182993116466,
+        "salinity": 33.33538723741655,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 19.629839607346725,
+        "salinity": 33.32378163119735,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 13.919580537637142,
+        "salinity": 33.140062497704626,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 6.546669627764735,
+        "salinity": 33.204698059376476,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "GLIDER_IN_502",
+    "instrument_type": "glider",
+    "latitude": 15.6899,
+    "longitude": 83.8953,
+    "time": "2026-08-28T02:20:57.207327",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 27.182205326212305,
+        "salinity": 33.04008765274625,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 26.010433303979138,
+        "salinity": 33.253549180997524,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 23.01580288108824,
+        "salinity": 33.35413709969182,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 19.00207257994561,
+        "salinity": 33.16961355645691,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 13.801836425944144,
+        "salinity": 33.40473989211303,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 6.083496800795381,
+        "salinity": 33.3551262854733,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "GLIDER_IN_503",
+    "instrument_type": "glider",
+    "latitude": 16.5218,
+    "longitude": 76.0381,
+    "time": "2026-08-26T08:46:30.244444",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 27.128461970049354,
+        "salinity": 33.297157095095436,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 26.346671248894115,
+        "salinity": 33.336863155753235,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 22.544173558039702,
+        "salinity": 33.26860514599985,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 19.31278082498825,
+        "salinity": 33.02412605135769,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 13.450162718083941,
+        "salinity": 32.996076782223994,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 5.940087872153267,
+        "salinity": 33.2717542255796,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "GLIDER_IN_504",
+    "instrument_type": "glider",
+    "latitude": 13.1399,
+    "longitude": 80.6731,
+    "time": "2026-08-25T09:06:07.778355",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 27.645117884018166,
+        "salinity": 33.2330700557064,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 26.48520601617708,
+        "salinity": 33.27964054296964,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 22.951434837772485,
+        "salinity": 33.0335306803805,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 19.370409708610538,
+        "salinity": 33.24031193270856,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 14.181903566503683,
+        "salinity": 33.055880423950406,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 6.2399405866588715,
+        "salinity": 33.19246963452449,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "GLIDER_IN_505",
+    "instrument_type": "glider",
+    "latitude": 9.2888,
+    "longitude": 67.5609,
+    "time": "2026-08-23T21:52:26.356317",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 27.830215871690854,
+        "salinity": 35.706012021367265,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 26.693464098236063,
+        "salinity": 35.694078647811104,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 23.303263853427403,
+        "salinity": 35.89551423205012,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 19.482592141077536,
+        "salinity": 35.850404651551784,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 14.159404319668921,
+        "salinity": 35.72071271677376,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 6.55120458977758,
+        "salinity": 35.69647576775806,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "GLIDER_IN_506",
+    "instrument_type": "glider",
+    "latitude": 10.0633,
+    "longitude": 72.2854,
+    "time": "2026-08-26T00:29:31.513211",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 27.674543122779394,
+        "salinity": 35.80421340817419,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 26.83719208264539,
+        "salinity": 35.92046350725758,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 23.42410732860602,
+        "salinity": 35.73796362774644,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 19.470491718696998,
+        "salinity": 35.85795044015498,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 14.09403667887979,
+        "salinity": 35.67719459808764,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 6.985475813252496,
+        "salinity": 35.76892757353828,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "GLIDER_IN_507",
+    "instrument_type": "glider",
+    "latitude": 11.6891,
+    "longitude": 74.2507,
+    "time": "2026-08-27T11:38:08.934329",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 27.680180480955336,
+        "salinity": 35.83112501545435,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 27.219986509267148,
+        "salinity": 35.911957491143454,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 23.098189020458584,
+        "salinity": 35.70444595593995,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 19.16642095216583,
+        "salinity": 35.82034636358672,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 13.922158560159248,
+        "salinity": 35.65777462904023,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 6.251268950792689,
+        "salinity": 35.69184519963856,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "GLIDER_IN_508",
+    "instrument_type": "glider",
+    "latitude": 9.1976,
+    "longitude": 82.8105,
+    "time": "2026-08-26T13:28:38.327922",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 27.97525649385388,
+        "salinity": 33.26536342613353,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 26.628736729879495,
+        "salinity": 33.19967040796727,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 23.79795962565363,
+        "salinity": 33.301453269268734,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 19.598930510643054,
+        "salinity": 33.35820381829638,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 14.195136077457045,
+        "salinity": 33.133159803169676,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 6.859051121027322,
+        "salinity": 33.069035070998815,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "GLIDER_IN_509",
+    "instrument_type": "glider",
+    "latitude": 13.7078,
+    "longitude": 72.1219,
+    "time": "2026-08-28T22:03:29.504974",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 27.123663841501042,
+        "salinity": 35.856296923669056,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 26.31259010167242,
+        "salinity": 35.75128746162353,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 22.84380202182765,
+        "salinity": 35.71360092303202,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 19.335922809727,
+        "salinity": 35.71690498835889,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 13.966028342292766,
+        "salinity": 35.794976189055085,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 6.1713021861885995,
+        "salinity": 35.709243633795836,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "CTD_STN_100",
+    "instrument_type": "ctd",
+    "latitude": 19.6947,
+    "longitude": 85.5791,
+    "time": "2026-08-27T21:39:30.161580",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 26.81582338388906,
+        "salinity": 33.457393575822366,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 26.043012404056178,
+        "salinity": 33.51660027881273,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 22.789825177242605,
+        "salinity": 33.62956897243498,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 18.987216602311122,
+        "salinity": 33.439061206741776,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 13.348299723761198,
+        "salinity": 33.419836262109705,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 5.782101695144722,
+        "salinity": 33.280723612443225,
+        "chlorophyll": null
+      },
+      {
+        "depth": 1000.0,
+        "temperature": 2.804363914612245,
+        "salinity": 33.47546268805426,
+        "chlorophyll": null
+      },
+      {
+        "depth": 2000.0,
+        "temperature": 2.2039989077878186,
+        "salinity": 33.56381890516629,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "CTD_STN_101",
+    "instrument_type": "ctd",
+    "latitude": 15.8124,
+    "longitude": 72.7785,
+    "time": "2026-08-25T21:17:03.028802",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 27.137234006691585,
+        "salinity": 35.50379189370531,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 26.145288677301235,
+        "salinity": 35.46923555646161,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 22.94485679465463,
+        "salinity": 35.45384865043815,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 19.283204367544844,
+        "salinity": 35.40962345162739,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 13.823039670421132,
+        "salinity": 35.61532548965263,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 5.679977187139828,
+        "salinity": 35.436248379562365,
+        "chlorophyll": null
+      },
+      {
+        "depth": 1000.0,
+        "temperature": 3.2703033947129807,
+        "salinity": 35.48375636911656,
+        "chlorophyll": null
+      },
+      {
+        "depth": 2000.0,
+        "temperature": 2.7989001382512186,
+        "salinity": 35.45168118506273,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "CTD_STN_102",
+    "instrument_type": "ctd",
+    "latitude": 19.3834,
+    "longitude": 73.2622,
+    "time": "2026-08-23T09:34:31.665003",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 27.022534246449982,
+        "salinity": 35.626410727606014,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 25.97069125587025,
+        "salinity": 35.50909835681704,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 22.41905367704509,
+        "salinity": 35.54706628147685,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 18.824396985818783,
+        "salinity": 35.47447543831469,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 13.539409728359665,
+        "salinity": 35.582793674166446,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 5.433826091089099,
+        "salinity": 35.52886227397387,
+        "chlorophyll": null
+      },
+      {
+        "depth": 1000.0,
+        "temperature": 2.8575302895155286,
+        "salinity": 35.575809355012915,
+        "chlorophyll": null
+      },
+      {
+        "depth": 2000.0,
+        "temperature": 2.420028078765605,
+        "salinity": 35.604084194652984,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "CTD_STN_103",
+    "instrument_type": "ctd",
+    "latitude": 13.7694,
+    "longitude": 78.3282,
+    "time": "2026-08-24T19:23:54.289967",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 27.401207213338505,
+        "salinity": 33.63411498498202,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 26.486824821756617,
+        "salinity": 33.48247195769529,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 23.08175874404815,
+        "salinity": 33.32310917527937,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 19.35662776804952,
+        "salinity": 33.56166921551096,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 13.685216140465025,
+        "salinity": 33.59150032345656,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 6.264933356881247,
+        "salinity": 33.466776966887934,
+        "chlorophyll": null
+      },
+      {
+        "depth": 1000.0,
+        "temperature": 3.442094889150006,
+        "salinity": 33.68165542862435,
+        "chlorophyll": null
+      },
+      {
+        "depth": 2000.0,
+        "temperature": 2.9339432291024603,
+        "salinity": 33.51985764690403,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  },
+  {
+    "platform_id": "CTD_STN_104",
+    "instrument_type": "ctd",
+    "latitude": 11.5167,
+    "longitude": 75.611,
+    "time": "2026-08-24T11:46:56.770080",
+    "profiles": [
+      {
+        "depth": 0.0,
+        "temperature": 27.80512579308274,
+        "salinity": 33.53216275840376,
+        "chlorophyll": null
+      },
+      {
+        "depth": 10.0,
+        "temperature": 26.565872345379773,
+        "salinity": 33.566331094766824,
+        "chlorophyll": null
+      },
+      {
+        "depth": 50.0,
+        "temperature": 23.33060979120179,
+        "salinity": 33.46442899534035,
+        "chlorophyll": null
+      },
+      {
+        "depth": 100.0,
+        "temperature": 19.43739003271954,
+        "salinity": 33.45578833813224,
+        "chlorophyll": null
+      },
+      {
+        "depth": 200.0,
+        "temperature": 14.23179726489303,
+        "salinity": 33.57788459580161,
+        "chlorophyll": null
+      },
+      {
+        "depth": 500.0,
+        "temperature": 6.602260033704475,
+        "salinity": 33.58068823598791,
+        "chlorophyll": null
+      },
+      {
+        "depth": 1000.0,
+        "temperature": 3.2825605370735107,
+        "salinity": 33.522477145673456,
+        "chlorophyll": null
+      },
+      {
+        "depth": 2000.0,
+        "temperature": 2.928121120170353,
+        "salinity": 33.458966850002284,
+        "chlorophyll": null
+      }
+    ],
+    "source_metadata": {
+      "data_status": "SYNTHETIC / DEMO DATA \u2014 NOT REAL OBSERVATIONS",
+      "is_synthetic": true,
+      "institution": "INCOIS Digital Twin (Demo)",
+      "quality_flag": "QC_PASSED"
+    }
+  }
+]
