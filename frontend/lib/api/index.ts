@@ -9,7 +9,8 @@ import {
   TrajectoryResult,
   RegionalInsight,
   ModelObsMatch,
-  ErrorHeatmapPoint
+  ErrorHeatmapPoint,
+  LocationPropertiesResponse
 } from '../../types/ocean';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
@@ -36,9 +37,9 @@ export const oceanApiService = {
   getProvenanceStatus: async () => {
     const health = await fetchFromApi<{ status: string; provenance_mode?: string }>(`/api/health`);
     if (health && health.status === 'ok') {
-      const modeStr = health.provenance_mode || 'SYNTHETIC DEMO DATASET (FastAPI Connected)';
+      const modeStr = health.provenance_mode || 'FASTAPI BACKEND · DEMO DATA';
       return {
-        mode: `FASTAPI BACKEND (${modeStr})` as const,
+        mode: modeStr as string,
         notice: 'Connected to live FastAPI Backend (Active Synthetic Demo Dataset).',
         isRealDataConnected: true
       };
@@ -94,13 +95,13 @@ export const oceanApiService = {
     return data;
   },
 
-  getAnomalies: async (): Promise<OceanAnomaly[]> => {
-    const data = await fetchFromApi<OceanAnomaly[]>(`/api/anomalies`);
+  getAnomalies: async (variable?: OceanVariable): Promise<OceanAnomaly[]> => {
+    const data = await fetchFromApi<OceanAnomaly[]>(`/api/anomalies${variable ? `?variable=${variable}` : ''}`);
     return data || [];
   },
 
-  getErrorHeatmap: async (): Promise<ErrorHeatmapPoint[]> => {
-    const data = await fetchFromApi<ErrorHeatmapPoint[]>(`/api/heatmap`);
+  getErrorHeatmap: async (variable?: OceanVariable): Promise<ErrorHeatmapPoint[]> => {
+    const data = await fetchFromApi<ErrorHeatmapPoint[]>(`/api/heatmap${variable ? `?variable=${variable}` : ''}`);
     return data || [];
   },
 
@@ -162,6 +163,17 @@ export const oceanApiService = {
       units: string;
       provenance?: any;
     }>(`/api/datasets/${datasetId}/slice?variable=${variable}&depth=${depth}&time=${timeIndex}`);
+    return data;
+  },
+
+  getReport: async (region: string = 'Arabian Sea', lat: number = 15.42, lon: number = 68.12) => {
+    const data = await fetchFromApi<any>(`/api/report?region=${encodeURIComponent(region)}&lat=${lat}&lon=${lon}`);
+    return data;
+  },
+
+  getLocationProperties: async (lat: number, lon: number, depth: number = 0, time?: string) => {
+    const timeParam = time ? `&time=${encodeURIComponent(time)}` : '';
+    const data = await fetchFromApi<LocationPropertiesResponse>(`/api/location-properties?lat=${lat}&lon=${lon}&depth=${depth}${timeParam}`);
     return data;
   }
 };

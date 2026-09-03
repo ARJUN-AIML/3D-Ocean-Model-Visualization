@@ -102,7 +102,58 @@ class ArgoFloatResponse(BaseModel):
     surfaceSalinity: float
     observationTime: str
     qualityStatus: str  # 'PASSED' | 'FLAGGED' | 'UNCERTAIN'
+    platformType: str = "ARGO_FLOAT"  # 'ARGO_FLOAT' | 'MOORED_BUOY' | 'SYNTHETIC_BUOY'
     profileData: List[ArgoProfilePoint]
+    provenance: Optional[ProvenanceInfo] = None
+
+
+class LocationPropertiesResponse(BaseModel):
+    available: bool = True
+    reason: Optional[str] = None
+    requestedLat: float
+    requestedLon: float
+    resolvedLat: float
+    resolvedLon: float
+    distanceKm: float
+    requestedDepth: float
+    resolvedDepth: float
+    requestedTime: str
+    resolvedTime: str
+    timeGapHours: float
+    interpolated: bool = False
+    regionName: str
+    
+    # Ocean State
+    temperatureC: Optional[float] = None
+    salinityPsu: Optional[float] = None
+    
+    # Currents
+    uMs: Optional[float] = None
+    vMs: Optional[float] = None
+    currentSpeedMps: Optional[float] = None
+    
+    # Waves
+    significantWaveHeightM: Optional[float] = None
+    peakWavePeriodS: Optional[float] = None
+    meanWaveDirectionDeg: Optional[float] = None
+    waveDirectionConvention: Optional[str] = "FROM_DIRECTION (0=North, 90=East, 180=South, 270=West)"
+    
+    # Anomaly & Bias
+    zScore: Optional[float] = None
+    anomalyStatus: Optional[str] = None
+    rawModelTemp: Optional[float] = None
+    predictedBiasTemp: Optional[float] = None
+    correctedModelTemp: Optional[float] = None
+    
+    # Profile Data
+    profileData: List[ArgoProfilePoint] = []
+    
+    # Station Info
+    nearestStationId: Optional[str] = None
+    nearestStationDistanceKm: Optional[float] = None
+    platformType: Optional[str] = None  # 'ARGO_FLOAT' | 'MOORED_BUOY' | 'SYNTHETIC_BUOY'
+    
+    reliability: str = "HIGH"
     provenance: Optional[ProvenanceInfo] = None
 
 

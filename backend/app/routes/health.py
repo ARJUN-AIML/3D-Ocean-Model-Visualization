@@ -16,6 +16,6 @@ async def get_health():
         status="ok",
         version="1.0.0",
         is_real_data_connected=True,
-        provenance_mode="REAL DATA (FastAPI Connected)",
-        message="INCOIS OceanTwin 3D FastAPI Backend Operational"
+        provenance_mode="FASTAPI BACKEND · DEMO DATA",
+        message="INCOIS OceanTwin 3D FastAPI Backend Operational (Synthetic Demo Dataset)"
     )

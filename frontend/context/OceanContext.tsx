@@ -10,7 +10,8 @@ import {
   OceanAnomaly,
   SelectedLocationState,
   TrajectoryResult,
-  DataProvenanceMode
+  DataProvenanceMode,
+  LocationPropertiesResponse
 } from '../types/ocean';
 
 import { oceanApiService } from '../lib/api';
@@ -83,6 +84,28 @@ interface OceanContextType {
   // Data Provenance Mode
   provenanceMode: DataProvenanceMode;
 
+  // Location Inspection & Drifter Telemetry
+  locationProperties: LocationPropertiesResponse | null;
+  setLocationProperties: (props: LocationPropertiesResponse | null) => void;
+  isLocationInspecting: boolean;
+  fetchLocationProperties: (lat: number, lon: number, depth?: number, time?: string) => Promise<void>;
+  drifterTelemetry: {
+    lat: number;
+    lon: number;
+    speedKts: number;
+    elapsedHours: number;
+    totalDistanceKm: number;
+    waveHeightM?: number | null;
+  } | null;
+  setDrifterTelemetry: (telemetry: {
+    lat: number;
+    lon: number;
+    speedKts: number;
+    elapsedHours: number;
+    totalDistanceKm: number;
+    waveHeightM?: number | null;
+  } | null) => void;
+
   // UI state
   leftControlsOpen: boolean;
   setLeftControlsOpen: (open: boolean) => void;
@@ -143,6 +166,24 @@ export const OceanProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [leftControlsOpen, setLeftControlsOpen] = useState<boolean>(true);
 
   const [provenanceMode, setProvenanceMode] = useState<DataProvenanceMode>('DEMO / MOCK DATA');
+
+  const [locationProperties, setLocationProperties] = useState<LocationPropertiesResponse | null>(null);
+  const [isLocationInspecting, setIsLocationInspecting] = useState<boolean>(false);
+  const [drifterTelemetry, setDrifterTelemetry] = useState<{
+    lat: number;
+    lon: number;
+    speedKts: number;
+    elapsedHours: number;
+    totalDistanceKm: number;
+    waveHeightM?: number | null;
+  } | null>(null);
+
+  const fetchLocationProperties = useCallback(async (lat: number, lon: number, depth: number = 0, time?: string) => {
+    setIsLocationInspecting(true);
+    const props = await oceanApiService.getLocationProperties(lat, lon, depth, time);
+    setLocationProperties(props);
+    setIsLocationInspecting(false);
+  }, []);
 
   useEffect(() => {
     oceanApiService.getProvenanceStatus().then(status => {

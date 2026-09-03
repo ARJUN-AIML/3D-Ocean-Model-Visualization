@@ -735,6 +735,35 @@ function CesiumGlobe() {
     };
   }, [layers.currentParticles, selectedDatasetId, selectedDepth, timeIndex, playbackSpeed, isPlaying, cesiumLoaded]);
 
+  // Real data state for layers
+  const [argoList, setArgoList] = useState<any[]>(DEMO_ARGO_FLOATS);
+  const [anomalyList, setAnomalyList] = useState<any[]>(DEMO_ANOMALIES);
+  const [heatmapPoints, setHeatmapPoints] = useState<any[]>([]);
+
+  useEffect(() => {
+    if (layers.argoFloats) {
+      oceanApiService.getArgoFloats().then(res => {
+        if (res && res.length > 0) setArgoList(res);
+      });
+    }
+  }, [layers.argoFloats]);
+
+  useEffect(() => {
+    if (layers.anomalies) {
+      oceanApiService.getAnomalies(selectedVariable).then(res => {
+        if (res && res.length > 0) setAnomalyList(res);
+      });
+    }
+  }, [layers.anomalies, selectedVariable]);
+
+  useEffect(() => {
+    if (layers.errorHeatmap) {
+      oceanApiService.getErrorHeatmap(selectedVariable).then(res => {
+        if (res && res.length > 0) setHeatmapPoints(res);
+      });
+    }
+  }, [layers.errorHeatmap, selectedVariable]);
+
   // ---------------------------------------------------------------------------
   // 4. GPU PRIMITIVE RENDERING PASS
   // ---------------------------------------------------------------------------
@@ -757,11 +786,9 @@ function CesiumGlobe() {
     });
     customPrimitivesRef.current = [];
 
-    viewer.entities.removeAll();
-
     // 1. ARGO FLOATS LAYER
     if (layers.argoFloats && argoPointsRef.current) {
-      DEMO_ARGO_FLOATS.forEach((float) => {
+      argoList.forEach((float) => {
         const isSelected = selectedArgo?.id === float.id;
         argoPointsRef.current.add({
           position: Cesium.Cartesian3.fromDegrees(float.lon, float.lat, isSelected ? 3500 : 2000),
@@ -777,7 +804,7 @@ function CesiumGlobe() {
 
     // 2. ANOMALIES LAYER
     if (layers.anomalies && anomalyPointsRef.current) {
-      DEMO_ANOMALIES.forEach((anomaly) => {
+      anomalyList.forEach((anomaly) => {
         const isSelected = selectedAnomaly?.id === anomaly.id;
         const colorHex =
           anomaly.severity === 'CRITICAL' ? '#ef4444' :
@@ -797,47 +824,53 @@ function CesiumGlobe() {
 
     // 4. ERROR HEATMAP OVERLAY
     if (layers.errorHeatmap) {
-      const heatmapFill = new Cesium.Primitive({
-        geometryInstances: new Cesium.GeometryInstance({
-          geometry: new Cesium.RectangleGeometry({
-            rectangle: Cesium.Rectangle.fromDegrees(55.0, 5.0, 80.0, 24.0),
-            height: 2000.0
+      if (heatmapPoints.length > 0) {
+        heatmapPoints.forEach((pt) => {
+          const fill = new Cesium.Primitive({
+            geometryInstances: new Cesium.GeometryInstance({
+              geometry: new Cesium.EllipseGeometry({
+                center: Cesium.Cartesian3.fromDegrees(pt.lon, pt.lat),
+                semiMinorAxis: 120000.0,
+                semiMajorAxis: 120000.0,
+                height: 1500.0
+              }),
+              attributes: {
+                color: Cesium.ColorGeometryInstanceAttribute.fromColor(
+                  Cesium.Color.fromCssColorString(pt.errorVal > 0.5 ? '#f43f5e' : '#f59e0b').withAlpha(0.35)
+                )
+              }
+            }),
+            appearance: new Cesium.PerInstanceColorAppearance({
+              flat: true,
+              translucent: true
+            }),
+            asynchronous: false
+          });
+          scene.primitives.add(fill);
+          customPrimitivesRef.current.push(fill);
+        });
+      } else {
+        const heatmapFill = new Cesium.Primitive({
+          geometryInstances: new Cesium.GeometryInstance({
+            geometry: new Cesium.RectangleGeometry({
+              rectangle: Cesium.Rectangle.fromDegrees(55.0, 5.0, 80.0, 24.0),
+              height: 2000.0
+            }),
+            attributes: {
+              color: Cesium.ColorGeometryInstanceAttribute.fromColor(
+                Cesium.Color.fromCssColorString('#f43f5e').withAlpha(0.25)
+              )
+            }
           }),
-          attributes: {
-            color: Cesium.ColorGeometryInstanceAttribute.fromColor(
-              Cesium.Color.fromCssColorString('#f43f5e').withAlpha(0.25)
-            )
-          }
-        }),
-        appearance: new Cesium.PerInstanceColorAppearance({
-          flat: true,
-          translucent: true
-        }),
-        asynchronous: false
-      });
-
-      const heatmapOutline = new Cesium.Primitive({
-        geometryInstances: new Cesium.GeometryInstance({
-          geometry: new Cesium.RectangleOutlineGeometry({
-            rectangle: Cesium.Rectangle.fromDegrees(55.0, 5.0, 80.0, 24.0),
-            height: 2000.0
+          appearance: new Cesium.PerInstanceColorAppearance({
+            flat: true,
+            translucent: true
           }),
-          attributes: {
-            color: Cesium.ColorGeometryInstanceAttribute.fromColor(
-              Cesium.Color.fromCssColorString('#f43f5e').withAlpha(0.6)
-            )
-          }
-        }),
-        appearance: new Cesium.PerInstanceColorAppearance({
-          flat: true,
-          translucent: true
-        }),
-        asynchronous: false
-      });
-
-      scene.primitives.add(heatmapFill);
-      scene.primitives.add(heatmapOutline);
-      customPrimitivesRef.current.push(heatmapFill, heatmapOutline);
+          asynchronous: false
+        });
+        scene.primitives.add(heatmapFill);
+        customPrimitivesRef.current.push(heatmapFill);
+      }
     }
 
     // 5. TRAJECTORY DRIFT PATH

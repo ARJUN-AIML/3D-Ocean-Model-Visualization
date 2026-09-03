@@ -54,6 +54,7 @@ export default function RightDrawer() {
   const [valMetrics, setValMetrics] = useState<ValidationMetrics | any | null>(null);
   const [reliabilityData, setReliabilityData] = useState<ReliabilityData | any | null>(null);
   const [insightData, setInsightData] = useState<RegionalInsight | null>(null);
+  const [reportData, setReportData] = useState<any | null>(null);
 
   // Fetch real data on drawer mount or state change
   useEffect(() => {
@@ -79,6 +80,10 @@ export default function RightDrawer() {
     } else if (activeDrawer === 'explain') {
       oceanApiService.getRegionalInsight(selectedLocation.lat, selectedLocation.lon).then(res => {
         if (res) setInsightData(res);
+      });
+    } else if (activeDrawer === 'report') {
+      oceanApiService.getReport(selectedLocation.regionName, selectedLocation.lat, selectedLocation.lon).then(res => {
+        if (res) setReportData(res);
       });
     }
   }, [activeDrawer, selectedArgo, selectedVariable, selectedDepth, selectedLocation]);
@@ -470,11 +475,18 @@ export default function RightDrawer() {
 
               <div className="grid grid-cols-1 gap-2 pt-1">
                 <button
-                  onClick={() => setReportGenerated(true)}
+                  onClick={() => {
+                    oceanApiService.getReport(selectedLocation.regionName, selectedLocation.lat, selectedLocation.lon).then(res => {
+                      if (res) {
+                        setReportData(res);
+                        setReportGenerated(true);
+                      }
+                    });
+                  }}
                   className="w-full py-2.5 rounded-lg bg-navy-ocean hover:bg-navy-sky/30 text-navy-ice font-bold border border-navy-sky transition flex items-center justify-center gap-2 shadow-subtle"
                 >
                   <FileText className="w-4 h-4 text-navy-sky" />
-                  <span>Generate Ocean Intelligence PDF</span>
+                  <span>Generate Ocean Intelligence Report</span>
                 </button>
 
                 <button
@@ -486,9 +498,17 @@ export default function RightDrawer() {
                 </button>
               </div>
 
-              {reportGenerated && (
-                <div className="p-2.5 rounded-lg bg-navy-ocean/60 border border-navy-sky/50 text-navy-ice font-mono text-center text-[11px]">
-                  ✓ Report Draft Generated
+              {reportGenerated && reportData && (
+                <div className="p-3 rounded-lg bg-navy-ocean/60 border border-navy-sky/50 text-navy-ice space-y-2 font-mono text-[11px]">
+                  <div className="font-bold text-navy-sky">{reportData.title}</div>
+                  <div className="text-[10px] text-navy-muted">Region: {reportData.region}</div>
+                  <div className="grid grid-cols-2 gap-1 text-[11px] pt-1">
+                    <div>SST: {reportData.summary.meanTemperatureC}°C</div>
+                    <div>Salinity: {reportData.summary.meanSalinityPsu} PSU</div>
+                    <div>MAE: {reportData.summary.validationMaeC}°C</div>
+                    <div>Status: {reportData.summary.reliabilityStatus}</div>
+                  </div>
+                  <div className="text-[9px] text-navy-sky font-semibold pt-1">PROVENANCE: {reportData.provenance.mode}</div>
                 </div>
               )}
             </div>

@@ -42,7 +42,45 @@ export interface ArgoFloat {
   surfaceSalinity: number;
   observationTime: string;
   qualityStatus: 'PASSED' | 'FLAGGED' | 'UNCERTAIN';
+  platformType?: 'ARGO_FLOAT' | 'MOORED_BUOY' | 'SYNTHETIC_BUOY';
   profileData: ArgoProfilePoint[];
+}
+
+export interface LocationPropertiesResponse {
+  available: boolean;
+  reason?: string | null;
+  requestedLat: number;
+  requestedLon: number;
+  resolvedLat: number;
+  resolvedLon: number;
+  distanceKm: number;
+  requestedDepth: number;
+  resolvedDepth: number;
+  requestedTime: string;
+  resolvedTime: string;
+  timeGapHours: number;
+  interpolated: boolean;
+  regionName: string;
+  temperatureC?: number | null;
+  salinityPsu?: number | null;
+  uMs?: number | null;
+  vMs?: number | null;
+  currentSpeedMps?: number | null;
+  significantWaveHeightM?: number | null;
+  peakWavePeriodS?: number | null;
+  meanWaveDirectionDeg?: number | null;
+  waveDirectionConvention?: string | null;
+  zScore?: number | null;
+  anomalyStatus?: string | null;
+  rawModelTemp?: number | null;
+  predictedBiasTemp?: number | null;
+  correctedModelTemp?: number | null;
+  profileData?: ArgoProfilePoint[];
+  nearestStationId?: string | null;
+  nearestStationDistanceKm?: number | null;
+  platformType?: 'ARGO_FLOAT' | 'MOORED_BUOY' | 'SYNTHETIC_BUOY' | null;
+  reliability?: string;
+  provenance?: any;
 }
 
 export interface ModelObsMatch {

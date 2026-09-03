@@ -57,11 +57,22 @@ async def list_observations(
             surf_sal = profiles[0].salinity if profiles else 35.0
             obs_time = str(top_row.get("time_utc", "2026-08-23T00:00:00Z"))
 
+            fid_str = str(fid)
+            if fid_str.startswith("SYNA100") or fid_str.startswith("SYNA101"):
+                platform_type = "ARGO_FLOAT"
+                station_name = f"Argo Float {fid_str}"
+            elif fid_str.startswith("SYNA102") or fid_str.startswith("SYNA103"):
+                platform_type = "MOORED_BUOY"
+                station_name = f"Moored Buoy {fid_str} (Active)"
+            else:
+                platform_type = "SYNTHETIC_BUOY"
+                station_name = f"Synthetic Demo Station {fid_str}"
+
             result.append(
                 ArgoFloatResponse(
-                    id=str(fid),
-                    wmoNumber=str(fid).replace("SYNA", "290"),
-                    name=f"Argo Float {fid}",
+                    id=fid_str,
+                    wmoNumber=fid_str.replace("SYNA", "290"),
+                    name=station_name,
                     lat=round(float(top_row["lat"]), 4),
                     lon=round(float(top_row["lon"]), 4),
                     depth=round(float(profiles[0].depth), 1),
@@ -69,6 +80,7 @@ async def list_observations(
                     surfaceSalinity=surf_sal,
                     observationTime=obs_time,
                     qualityStatus="PASSED",
+                    platformType=platform_type,
                     profileData=profiles,
                     provenance=ProvenanceInfo(
                         dataset_type="synthetic",
