@@ -32,18 +32,32 @@ export default function LeftControls() {
     trajectoryModeActive,
     setTrajectoryModeActive,
     setActiveDrawer,
-    activeDrawer
+    activeDrawer,
+    heatmapMode,
+    setHeatmapMode,
+    flyToLocation
   } = useOcean();
+
+  const handleLayerToggle = (key: keyof LayerVisibilityState) => {
+    toggleLayer(key);
+    if (key === 'errorHeatmap' && !layers.errorHeatmap) {
+      flyToLocation(14.0, 70.0, 4500000, -60, 0);
+    }
+  };
+
+  const handleVariableChange = (variable: typeof selectedVariable) => {
+    setSelectedVariable(variable);
+  };
 
   return (
     <aside
-      className={`absolute top-[72px] left-3 z-40 transition-all duration-300 ${
-        leftControlsOpen ? 'w-80 max-w-[calc(100vw-24px)]' : 'w-11'
+      className={`absolute top-[64px] left-2 z-40 transition-all duration-300 ${
+        leftControlsOpen ? 'w-80 max-w-[calc(100vw-16px)]' : 'w-11'
       }`}
     >
-      <div className="bg-navy-deep border-2 border-navy-sky rounded-xl p-3 shadow-panel text-navy-ice max-h-[calc(100vh-160px)] sm:max-h-[calc(100vh-180px)] overflow-y-auto">
+      <div className="bg-navy-deep/95 backdrop-blur-md border-2 border-navy-sky rounded-xl p-3 shadow-panel text-navy-ice max-h-[calc(100vh-140px)] overflow-y-auto custom-scrollbar">
         {/* Panel Header & Collapse Toggle */}
-        <div className="flex items-center justify-between border-b-2 border-navy-sky pb-2.5 mb-3 sticky top-0 bg-navy-deep z-10">
+        <div className="flex items-center justify-between border-b-2 border-navy-sky pb-2 mb-3 sticky -top-3 bg-navy-deep/95 backdrop-blur-md pt-1 z-10">
           {leftControlsOpen && (
             <div className="flex items-center gap-2">
               <Sliders className="w-4 h-4 text-navy-sky" />
@@ -68,62 +82,62 @@ export default function LeftControls() {
               </label>
               <div className="grid grid-cols-2 gap-1.5">
                 <button
-                  onClick={() => setSelectedVariable('temp')}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg border text-left transition ${
+                  onClick={() => handleVariableChange('temp')}
+                  className={`flex items-center gap-2 px-2.5 py-2 rounded-lg border text-left transition ${
                     selectedVariable === 'temp'
                       ? 'bg-navy-sky text-navy-deep border-2 border-navy-ice font-bold shadow-md'
                       : 'bg-navy-ocean text-navy-ice border border-navy-sky hover:bg-navy-sky hover:text-navy-deep'
                   }`}
                 >
-                  <Thermometer className="w-4 h-4" />
-                  <div>
-                    <div className="font-semibold text-xs">Temperature</div>
-                    <div className="text-[10px] font-mono">°C</div>
+                  <Thermometer className="w-4 h-4 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <div className="font-semibold text-xs truncate">Temperature</div>
+                    <div className="text-[10px] font-mono opacity-90">°C</div>
                   </div>
                 </button>
 
                 <button
-                  onClick={() => setSelectedVariable('salinity')}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg border text-left transition ${
+                  onClick={() => handleVariableChange('salinity')}
+                  className={`flex items-center gap-2 px-2.5 py-2 rounded-lg border text-left transition ${
                     selectedVariable === 'salinity'
                       ? 'bg-navy-sky text-navy-deep border-2 border-navy-ice font-bold shadow-md'
                       : 'bg-navy-ocean text-navy-ice border border-navy-sky hover:bg-navy-sky hover:text-navy-deep'
                   }`}
                 >
-                  <Droplets className="w-4 h-4" />
-                  <div>
-                    <div className="font-semibold text-xs">Salinity</div>
-                    <div className="text-[10px] font-mono">PSU</div>
+                  <Droplets className="w-4 h-4 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <div className="font-semibold text-xs truncate">Salinity</div>
+                    <div className="text-[10px] font-mono opacity-90">PSU</div>
                   </div>
                 </button>
 
                 <button
-                  onClick={() => setSelectedVariable('currents')}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg border text-left transition ${
+                  onClick={() => handleVariableChange('currents')}
+                  className={`flex items-center gap-2 px-2.5 py-2 rounded-lg border text-left transition ${
                     selectedVariable === 'currents'
                       ? 'bg-navy-sky text-navy-deep border-2 border-navy-ice font-bold shadow-md'
                       : 'bg-navy-ocean text-navy-ice border border-navy-sky hover:bg-navy-sky hover:text-navy-deep'
                   }`}
                 >
-                  <Wind className="w-4 h-4" />
-                  <div>
-                    <div className="font-semibold text-xs">Currents</div>
-                    <div className="text-[10px] font-mono">m/s</div>
+                  <Wind className="w-4 h-4 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <div className="font-semibold text-xs truncate">Currents</div>
+                    <div className="text-[10px] font-mono opacity-90">m/s</div>
                   </div>
                 </button>
 
                 <button
-                  onClick={() => setSelectedVariable('waves')}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg border text-left transition ${
+                  onClick={() => handleVariableChange('waves')}
+                  className={`flex items-center gap-2 px-2.5 py-2 rounded-lg border text-left transition ${
                     selectedVariable === 'waves'
                       ? 'bg-navy-sky text-navy-deep border-2 border-navy-ice font-bold shadow-md'
                       : 'bg-navy-ocean text-navy-ice border border-navy-sky hover:bg-navy-sky hover:text-navy-deep'
                   }`}
                 >
-                  <Radio className="w-4 h-4" />
-                  <div>
-                    <div className="font-semibold text-xs">Waves</div>
-                    <div className="text-[10px] font-mono">Height (m)</div>
+                  <Radio className="w-4 h-4 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <div className="font-semibold text-xs truncate">Waves</div>
+                    <div className="text-[10px] font-mono opacity-90">Height (m)</div>
                   </div>
                 </button>
               </div>
@@ -135,18 +149,18 @@ export default function LeftControls() {
                 <label className="text-[11px] font-mono font-semibold text-navy-sky uppercase tracking-wider">
                   Depth Level
                 </label>
-                <span className="font-mono font-bold text-navy-ice bg-navy-ocean px-2 py-0.5 rounded border border-navy-sky">
-                  {selectedDepth === 0 ? 'Surface (0m)' : `${selectedDepth} m`}
+                <span className="font-mono font-bold text-navy-ice bg-navy-ocean px-2 py-0.5 rounded border border-navy-sky text-[11px]">
+                  {selectedDepth === 0 ? 'Surface (0m)' : `${selectedDepth}m`}
                 </span>
               </div>
 
-              {/* Depth Selector Buttons */}
-              <div className="flex flex-wrap gap-1 mb-2">
+              {/* Depth Selector Buttons — Structured 4-column layout to prevent clipping */}
+              <div className="grid grid-cols-4 gap-1 mb-2">
                 {DEPTH_LEVELS.map((d) => (
                   <button
                     key={d}
                     onClick={() => setSelectedDepth(d)}
-                    className={`flex-1 py-1 rounded text-[11px] font-mono transition border ${
+                    className={`py-1.5 px-1 rounded text-[11px] font-mono transition text-center border ${
                       selectedDepth === d
                         ? 'bg-navy-sky text-navy-deep font-bold border-2 border-navy-ice shadow-md'
                         : 'bg-navy-ocean border border-navy-sky text-navy-ice hover:bg-navy-sky hover:text-navy-deep'
@@ -164,7 +178,7 @@ export default function LeftControls() {
                 Layers & Overlays
               </label>
 
-              <div className="space-y-1">
+              <div className="space-y-1.5">
                 {[
                   { key: 'argoFloats', label: '📡 Argo Float Observations' },
                   { key: 'currentParticles', label: '🌊 Animated Current Field' },
@@ -174,22 +188,54 @@ export default function LeftControls() {
                 ].map(({ key, label }) => {
                   const isActive = layers[key as keyof LayerVisibilityState];
                   return (
-                    <button
-                      key={key}
-                      onClick={() => toggleLayer(key as keyof LayerVisibilityState)}
-                      className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg border text-left transition text-[11px] ${
-                        isActive
-                          ? 'bg-navy-sky text-navy-deep font-bold border-2 border-navy-ice shadow-md'
-                          : 'bg-navy-ocean text-navy-ice border border-navy-sky/60 hover:bg-navy-sky hover:text-navy-deep'
-                      }`}
-                    >
-                      <span>{label}</span>
-                      {isActive ? (
-                        <Eye className="w-3.5 h-3.5 text-navy-deep" />
-                      ) : (
-                        <EyeOff className="w-3.5 h-3.5 text-navy-ice/50" />
+                    <div key={key} className="space-y-1">
+                      <button
+                        onClick={() => handleLayerToggle(key as keyof LayerVisibilityState)}
+                        className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg border text-left transition text-[11px] ${
+                          isActive
+                            ? 'bg-navy-sky text-navy-deep font-bold border-2 border-navy-ice shadow-md'
+                            : 'bg-navy-ocean text-navy-ice border border-navy-sky/60 hover:bg-navy-sky hover:text-navy-deep'
+                        }`}
+                      >
+                        <span className="truncate">{label}</span>
+                        {isActive ? (
+                          <Eye className="w-3.5 h-3.5 text-navy-deep flex-shrink-0 ml-1" />
+                        ) : (
+                          <EyeOff className="w-3.5 h-3.5 text-navy-ice/50 flex-shrink-0 ml-1" />
+                        )}
+                      </button>
+
+                      {key === 'errorHeatmap' && isActive && (
+                        <div className="p-2 bg-navy-darker rounded-lg border border-navy-sky/80 space-y-1.5 text-[10px] my-1">
+                          <div className="flex items-center justify-between text-navy-sky font-semibold uppercase tracking-wider">
+                            <span>Error Calculation:</span>
+                            <span className="font-mono text-navy-ice font-bold">{heatmapMode.toUpperCase()}</span>
+                          </div>
+                          <div className="grid grid-cols-2 gap-1">
+                            <button
+                              onClick={(e) => { e.stopPropagation(); setHeatmapMode('raw'); }}
+                              className={`py-1 px-1.5 rounded text-center transition font-semibold ${
+                                heatmapMode === 'raw'
+                                  ? 'bg-navy-sky text-navy-deep border border-navy-ice font-bold shadow'
+                                  : 'bg-navy-ocean text-navy-ice hover:bg-navy-sky/40 border border-navy-sky/40'
+                              }`}
+                            >
+                              Raw Error
+                            </button>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); setHeatmapMode('corrected'); }}
+                              className={`py-1 px-1.5 rounded text-center transition font-semibold ${
+                                heatmapMode === 'corrected'
+                                  ? 'bg-navy-sky text-navy-deep border border-navy-ice font-bold shadow'
+                                  : 'bg-navy-ocean text-navy-ice hover:bg-navy-sky/40 border border-navy-sky/40'
+                              }`}
+                            >
+                              XGBoost Corrected
+                            </button>
+                          </div>
+                        </div>
                       )}
-                    </button>
+                    </div>
                   );
                 })}
               </div>
@@ -205,8 +251,8 @@ export default function LeftControls() {
                     : 'bg-navy-ocean border border-navy-sky text-navy-ice hover:bg-navy-sky hover:text-navy-deep'
                 }`}
               >
-                <Navigation className="w-4 h-4" />
-                <span>{trajectoryModeActive ? 'Selecting Drift Origin...' : 'Current Trajectory Mode'}</span>
+                <Navigation className="w-4 h-4 flex-shrink-0" />
+                <span className="truncate">{trajectoryModeActive ? 'Selecting Drift Origin...' : 'Current Trajectory Mode'}</span>
               </button>
 
               {/* PROMINENT AI MODEL INSIGHTS BUTTON */}
@@ -219,15 +265,15 @@ export default function LeftControls() {
                 }`}
                 title="Open AI Ocean Model Insights & Physics Explanation Drawer"
               >
-                <Sparkles className="w-4 h-4" />
-                <span className="tracking-wide">AI MODEL INSIGHTS & PREDICTIONS</span>
+                <Sparkles className="w-4 h-4 flex-shrink-0 text-cyan-300" />
+                <span className="tracking-wider text-xs uppercase font-bold truncate">AI MODEL INSIGHTS & PREDICTIONS</span>
               </button>
 
               {/* QUICK SCIENTIFIC ANALYTICS DRAWERS */}
               <div className="grid grid-cols-3 gap-1 pt-1">
                 <button
                   onClick={() => setActiveDrawer(activeDrawer === 'reliability' ? 'none' : 'reliability')}
-                  className={`py-1 px-1.5 rounded text-[10px] font-mono text-center transition border ${
+                  className={`py-1 px-1.5 rounded text-[10px] font-mono text-center transition border truncate ${
                     activeDrawer === 'reliability'
                       ? 'bg-navy-sky text-navy-deep font-bold border-navy-ice'
                       : 'bg-navy-ocean text-navy-ice border-navy-sky/60 hover:bg-navy-sky hover:text-navy-deep'
@@ -238,7 +284,7 @@ export default function LeftControls() {
                 </button>
                 <button
                   onClick={() => setActiveDrawer(activeDrawer === 'argo' ? 'none' : 'argo')}
-                  className={`py-1 px-1.5 rounded text-[10px] font-mono text-center transition border ${
+                  className={`py-1 px-1.5 rounded text-[10px] font-mono text-center transition border truncate ${
                     activeDrawer === 'argo'
                       ? 'bg-navy-sky text-navy-deep font-bold border-navy-ice'
                       : 'bg-navy-ocean text-navy-ice border-navy-sky/60 hover:bg-navy-sky hover:text-navy-deep'
@@ -249,7 +295,7 @@ export default function LeftControls() {
                 </button>
                 <button
                   onClick={() => setActiveDrawer(activeDrawer === 'bias' ? 'none' : 'bias')}
-                  className={`py-1 px-1.5 rounded text-[10px] font-mono text-center transition border ${
+                  className={`py-1 px-1.5 rounded text-[10px] font-mono text-center transition border truncate ${
                     activeDrawer === 'bias'
                       ? 'bg-navy-sky text-navy-deep font-bold border-navy-ice'
                       : 'bg-navy-ocean text-navy-ice border-navy-sky/60 hover:bg-navy-sky hover:text-navy-deep'
@@ -266,3 +312,4 @@ export default function LeftControls() {
     </aside>
   );
 }
+

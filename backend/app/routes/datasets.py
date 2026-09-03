@@ -261,8 +261,8 @@ async def get_location_properties(
         min_idx = np.argmin(dists)
         min_dist_km = float(dists[min_idx])
         
-        # Coverage check: If clicked > 350km away from any model grid point, return available=False
-        if min_dist_km > 350.0:
+        # Coverage check: Include all Indian seas & ocean basin locations
+        if min_dist_km > 4000.0:
             return LocationPropertiesResponse(
                 available=False,
                 reason="Location outside available ocean model coverage grid (Arabian Sea / Central Indian Ocean EEZ)",

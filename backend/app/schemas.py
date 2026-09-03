@@ -257,8 +257,35 @@ class OceanAnomalyResponse(BaseModel):
 class ErrorHeatmapPointResponse(BaseModel):
     lat: float
     lon: float
+    depthM: float
+    timestamp: str
+    modelValue: float
+    observedValue: float
     rawError: float
-    correctedError: float
+    correctedModelValue: Optional[float] = None
+    correctedError: Optional[float] = None
+    error: float
+    absoluteError: float
+    variable: str
+    mode: str
+
+
+class ErrorHeatmapStatistics(BaseModel):
+    matchCount: int
+    mae: float
+    rmse: float
+    bias: float
+
+
+class ErrorHeatmapResponse(BaseModel):
+    variable: str
+    mode: str
+    errorConvention: str = "observation_minus_model"
+    requestedDepthM: float
+    resolvedDepthM: float
+    points: List[ErrorHeatmapPointResponse]
+    statistics: ErrorHeatmapStatistics
+    provenance: Optional[ProvenanceInfo] = None
 
 
 class TrajectorySimRequest(BaseModel):

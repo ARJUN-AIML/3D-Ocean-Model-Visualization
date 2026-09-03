@@ -30,3 +30,10 @@ Thumbs.db
 *.log
 artifacts/
 .gemini/
+pytest_*.txt
+
+# Environment files
+.env
+.env.local
+.env*.local
+

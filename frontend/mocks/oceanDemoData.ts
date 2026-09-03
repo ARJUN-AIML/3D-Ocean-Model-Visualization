@@ -275,9 +275,9 @@ export const DEMO_REGIONAL_INSIGHT: RegionalInsight = {
 };
 
 export const DEMO_ERROR_HEATMAP: ErrorHeatmapPoint[] = [
-  { lat: 15.0, lon: 65.0, rawError: 1.4, correctedError: 0.12 },
-  { lat: 16.0, lon: 67.0, rawError: 1.8, correctedError: 0.15 },
-  { lat: 14.0, lon: 70.0, rawError: 0.9, correctedError: 0.08 },
-  { lat: 10.0, lon: 75.0, rawError: 1.1, correctedError: 0.10 },
-  { lat: 12.0, lon: 82.0, rawError: 1.6, correctedError: 0.18 }
+  { lat: 15.0, lon: 65.0, depthM: 0, timestamp: '2026-09-02T00:00:00Z', error: 1.4, absoluteError: 1.4, modelValue: 27.0, observedValue: 28.4, variable: 'temperature', mode: 'raw', rawError: 1.4, correctedError: 0.12 },
+  { lat: 16.0, lon: 67.0, depthM: 0, timestamp: '2026-09-02T00:00:00Z', error: 1.8, absoluteError: 1.8, modelValue: 26.8, observedValue: 28.6, variable: 'temperature', mode: 'raw', rawError: 1.8, correctedError: 0.15 },
+  { lat: 14.0, lon: 70.0, depthM: 0, timestamp: '2026-09-02T00:00:00Z', error: 0.9, absoluteError: 0.9, modelValue: 27.5, observedValue: 28.4, variable: 'temperature', mode: 'raw', rawError: 0.9, correctedError: 0.08 },
+  { lat: 10.0, lon: 75.0, depthM: 0, timestamp: '2026-09-02T00:00:00Z', error: 1.1, absoluteError: 1.1, modelValue: 27.3, observedValue: 28.4, variable: 'temperature', mode: 'raw', rawError: 1.1, correctedError: 0.10 },
+  { lat: 12.0, lon: 82.0, depthM: 0, timestamp: '2026-09-02T00:00:00Z', error: 1.6, absoluteError: 1.6, modelValue: 27.2, observedValue: 28.8, variable: 'temperature', mode: 'raw', rawError: 1.6, correctedError: 0.18 }
 ];

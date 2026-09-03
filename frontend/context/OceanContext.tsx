@@ -106,6 +106,12 @@ interface OceanContextType {
     waveHeightM?: number | null;
   } | null) => void;
 
+  // Heatmap State
+  heatmapMode: 'raw' | 'corrected';
+  setHeatmapMode: (mode: 'raw' | 'corrected') => void;
+  heatmapVariable: 'temperature' | 'salinity';
+  setHeatmapVariable: (v: 'temperature' | 'salinity') => void;
+
   // UI state
   leftControlsOpen: boolean;
   setLeftControlsOpen: (open: boolean) => void;
@@ -177,6 +183,9 @@ export const OceanProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     totalDistanceKm: number;
     waveHeightM?: number | null;
   } | null>(null);
+
+  const [heatmapMode, setHeatmapMode] = useState<'raw' | 'corrected'>('raw');
+  const [heatmapVariable, setHeatmapVariable] = useState<'temperature' | 'salinity'>('temperature');
 
   const fetchLocationProperties = useCallback(async (lat: number, lon: number, depth: number = 0, time?: string) => {
     setIsLocationInspecting(true);
@@ -293,6 +302,18 @@ export const OceanProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const formattedCurrentTime = useMemo(() => availableTimeSteps[timeIndex] || availableTimeSteps[0] || "2026-08-23T00:00:00Z", [availableTimeSteps, timeIndex]);
 
+  const handleSetSelectedVariable = useCallback((v: OceanVariable) => {
+    setSelectedVariable(v);
+    if (v === 'temp') {
+      setHeatmapVariable('temperature');
+    } else if (v === 'salinity') {
+      setHeatmapVariable('salinity');
+    } else if (v === 'currents') {
+      setLayers((prev) => ({ ...prev, currentParticles: true, oceanDataGrid: true }));
+    }
+    setLayers((prev) => ({ ...prev, oceanDataGrid: true }));
+  }, []);
+
   const contextValue = useMemo(() => ({
     selectedDatasetId,
     setSelectedDatasetId,
@@ -301,9 +322,10 @@ export const OceanProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     availableDepths,
     availableVariables,
     selectedVariable,
-    setSelectedVariable,
+    setSelectedVariable: handleSetSelectedVariable,
     selectedDepth,
     setSelectedDepth,
+
     timeIndex,
     setTimeIndex,
     isPlaying,
@@ -341,6 +363,16 @@ export const OceanProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setAutoRotate,
     toggleAutoRotate,
     provenanceMode,
+    locationProperties,
+    setLocationProperties,
+    isLocationInspecting,
+    fetchLocationProperties,
+    drifterTelemetry,
+    setDrifterTelemetry,
+    heatmapMode,
+    setHeatmapMode,
+    heatmapVariable,
+    setHeatmapVariable,
     leftControlsOpen,
     setLeftControlsOpen
   }), [
@@ -377,6 +409,12 @@ export const OceanProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     autoRotate,
     toggleAutoRotate,
     provenanceMode,
+    locationProperties,
+    isLocationInspecting,
+    fetchLocationProperties,
+    drifterTelemetry,
+    heatmapMode,
+    heatmapVariable,
     leftControlsOpen
   ]);
 

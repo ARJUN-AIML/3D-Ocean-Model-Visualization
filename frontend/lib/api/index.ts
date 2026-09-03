@@ -10,6 +10,7 @@ import {
   RegionalInsight,
   ModelObsMatch,
   ErrorHeatmapPoint,
+  ErrorHeatmapResponse,
   LocationPropertiesResponse
 } from '../../types/ocean';
 
@@ -100,9 +101,10 @@ export const oceanApiService = {
     return data || [];
   },
 
-  getErrorHeatmap: async (variable?: OceanVariable): Promise<ErrorHeatmapPoint[]> => {
-    const data = await fetchFromApi<ErrorHeatmapPoint[]>(`/api/heatmap${variable ? `?variable=${variable}` : ''}`);
-    return data || [];
+  getErrorHeatmap: async (variable: string = 'temperature', mode: string = 'raw', depth: number = 0, time?: string) => {
+    const timeParam = time ? `&time=${encodeURIComponent(time)}` : '';
+    const data = await fetchFromApi<ErrorHeatmapResponse>(`/api/heatmap?variable=${variable}&mode=${mode}&depth=${depth}${timeParam}`);
+    return data;
   },
 
   getWaveData: async () => {

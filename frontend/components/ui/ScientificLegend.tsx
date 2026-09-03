@@ -4,17 +4,21 @@ import React from 'react';
 import { useOcean } from '../../context/OceanContext';
 
 export default function ScientificLegend() {
-  const { selectedVariable, layers } = useOcean();
+  const { selectedVariable, layers, heatmapMode, heatmapVariable } = useOcean();
 
   const getLegendDetails = () => {
     if (layers.errorHeatmap) {
+      const varName = (heatmapVariable || selectedVariable || 'temperature').toUpperCase();
+      const isSal = (heatmapVariable || selectedVariable) === 'salinity';
+      const modeName = (heatmapMode || 'raw').toUpperCase();
+
       return {
-        title: 'MODEL ERROR (RAW vs CORRECTED)',
-        unit: '°C Residual',
-        gradient: 'from-emerald-500 via-yellow-400 to-rose-600',
-        min: '0.0 °C',
-        mid: '1.5 °C',
-        max: '3.0+ °C'
+        title: `HEATMAP (${modeName} ${varName})`,
+        unit: isSal ? 'PSU (Obs-Model)' : '°C (Obs-Model)',
+        gradient: 'from-blue-600 via-cyan-400 via-emerald-500 via-amber-400 to-rose-600',
+        min: isSal ? '-0.5' : '-2.0',
+        mid: '0.0 (Agree)',
+        max: isSal ? '+0.5' : '+2.0'
       };
     }
 

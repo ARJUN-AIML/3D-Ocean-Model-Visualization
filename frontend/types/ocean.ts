@@ -138,8 +138,35 @@ export interface ReliabilityData {
 export interface ErrorHeatmapPoint {
   lat: number;
   lon: number;
+  depthM: number;
+  timestamp: string;
+  modelValue: number;
+  observedValue: number;
   rawError: number;
-  correctedError: number;
+  correctedModelValue?: number | null;
+  correctedError?: number | null;
+  error: number;
+  absoluteError: number;
+  variable: string;
+  mode: string;
+}
+
+export interface ErrorHeatmapStatistics {
+  matchCount: number;
+  mae: number;
+  rmse: number;
+  bias: number;
+}
+
+export interface ErrorHeatmapResponse {
+  variable: string;
+  mode: string;
+  errorConvention: string;
+  requestedDepthM: number;
+  resolvedDepthM: number;
+  points: ErrorHeatmapPoint[];
+  statistics: ErrorHeatmapStatistics;
+  provenance?: any;
 }
 
 export interface OceanAnomaly {

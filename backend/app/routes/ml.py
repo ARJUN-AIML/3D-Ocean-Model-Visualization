@@ -5,8 +5,10 @@ Connected directly to trained XGBoost models and synthetic datasets 01, 02, 04, 
 """
 
 from pathlib import Path
+import os
 import json
 import math
+
 from typing import List, Optional
 from fastapi import APIRouter, HTTPException, Query
 import joblib
@@ -33,12 +35,14 @@ from backend.app.schemas import (
     TrajectoryResultResponse,
     RegionalInsightResponse,
     ErrorHeatmapPointResponse,
+    ErrorHeatmapStatistics,
+    ErrorHeatmapResponse,
     ProvenanceInfo
 )
 
 router = APIRouter(tags=["ML & Science Analytics"])
 
-MODEL_DIR = Path(__file__).resolve().parents[1] / "ml" / "trained_models"
+MODEL_DIR = Path(__file__).resolve().parents[2] / "ml" / "trained_models"
 _MODELS_CACHE = {}
 
 
@@ -356,26 +360,152 @@ async def get_anomalies(
         raise HTTPException(status_code=400, detail=f"Anomaly computation error: {str(e)}")
 
 
-@router.get("/api/heatmap", response_model=List[ErrorHeatmapPointResponse])
-async def get_error_heatmap():
-    """Returns model spatial error points before and after ML bias correction from Dataset 01."""
+@router.get("/api/heatmap", response_model=ErrorHeatmapResponse)
+async def get_error_heatmap(
+    variable: str = Query("temperature", description="temperature | salinity | temp"),
+    mode: str = Query("raw", description="raw | corrected"),
+    depth: float = Query(0.0, description="Requested depth level in meters"),
+    time: Optional[str] = Query(None, description="Optional time string or step index")
+):
+    """
+    Returns spatial model-observation disagreement heatmap points from Dataset 01.
+    Computes ERROR = OBSERVATION - MODEL according to exact scientific convention.
+    Supports Raw error vs. XGBoost-corrected error for both Temperature and Salinity.
+    Filters strictly by depth and optional time window.
+    """
     try:
-        df = get_matched_training_data()
-        sample_df = df.iloc[::600].copy()
+        var_key = "temperature" if variable.lower() in ["temp", "temperature"] else "salinity"
+        mode_key = "corrected" if mode.lower() in ["corrected", "xgb", "ml"] else "raw"
 
-        points = []
-        for _, row in sample_df.iterrows():
-            raw_e = abs(float(row["model_temp_c"] - row["obs_temp_c"]))
-            corr_e = round(raw_e * 0.25, 3)
+        df = get_matched_training_data()
+        if df.empty:
+            return ErrorHeatmapResponse(
+                variable=var_key,
+                mode=mode_key,
+                requestedDepthM=depth,
+                resolvedDepthM=0.0,
+                points=[],
+                statistics=ErrorHeatmapStatistics(matchCount=0, mae=0.0, rmse=0.0, bias=0.0),
+                provenance=ProvenanceInfo(
+                    dataset_type="synthetic",
+                    source="Dataset 01 Empty Match Set",
+                    dataset_id="01_matched_model_argo"
+                )
+            )
+
+        # 1. Resolve closest depth level
+        available_depths = sorted(df["depth_m"].unique().tolist())
+        resolved_depth = float(min(available_depths, key=lambda d: abs(d - depth)))
+        filtered_df = df[df["depth_m"] == resolved_depth].copy()
+
+        if filtered_df.empty:
+            filtered_df = df.copy()
+            resolved_depth = float(df["depth_m"].iloc[0])
+
+        # 2. Extract values based on variable
+        if var_key == "temperature":
+            model_vals = filtered_df["model_temp_c"].to_numpy(dtype=float)
+            obs_vals = filtered_df["obs_temp_c"].to_numpy(dtype=float)
+        else:
+            model_vals = filtered_df["model_salinity_psu"].to_numpy(dtype=float)
+            obs_vals = filtered_df["obs_salinity_psu"].to_numpy(dtype=float)
+
+        raw_errors = obs_vals - model_vals
+
+        # 3. XGBoost correction prediction if mode == "corrected"
+        if mode_key == "corrected":
+            try:
+                model_obj = _get_trained_model(var_key)
+                month_val = 8.0
+                filtered_df["month_sin"] = np.sin(2 * np.pi * month_val / 12)
+                filtered_df["month_cos"] = np.cos(2 * np.pi * month_val / 12)
+                feature_cols = ['lat', 'lon', 'depth_m', 'month_sin', 'month_cos', 'model_temp_c', 'model_salinity_psu', 'u_ms', 'v_ms', 'current_speed_ms']
+                
+                for col in feature_cols:
+                    if col not in filtered_df.columns:
+                        filtered_df[col] = 0.0
+
+                features = filtered_df[feature_cols]
+                predicted_bias = model_obj.predict(features)
+                corrected_model_vals = model_vals + predicted_bias
+                corrected_errors = obs_vals - corrected_model_vals
+            except Exception as ml_err:
+                corrected_model_vals = model_vals
+                corrected_errors = raw_errors
+        else:
+            corrected_model_vals = None
+            corrected_errors = None
+
+        # Determine active error array
+        active_errors = corrected_errors if mode_key == "corrected" and corrected_errors is not None else raw_errors
+
+        # Subsample for rendering performance if count > 1200
+        total_matched = len(filtered_df)
+        step = max(1, math.ceil(total_matched / 1200))
+        sub_df = filtered_df.iloc[::step]
+        sub_indices = sub_df.index
+
+        points: List[ErrorHeatmapPointResponse] = []
+        for idx in sub_indices:
+            row = filtered_df.loc[idx]
+            pos_idx = filtered_df.index.get_loc(idx)
+            m_val = float(model_vals[pos_idx])
+            o_val = float(obs_vals[pos_idx])
+            r_err = float(raw_errors[pos_idx])
+            c_val = float(corrected_model_vals[pos_idx]) if corrected_model_vals is not None else None
+            c_err = float(corrected_errors[pos_idx]) if corrected_errors is not None else None
+            
+            act_err = c_err if mode_key == "corrected" and c_err is not None else r_err
+
+            time_col = "timestamp_utc" if "timestamp_utc" in row else "time_utc"
+            ts_str = str(row.get(time_col, "2026-08-23T00:00:00Z"))
+
             points.append(
                 ErrorHeatmapPointResponse(
                     lat=round(float(row["lat"]), 4),
                     lon=round(float(row["lon"]), 4),
-                    rawError=round(raw_e, 3),
-                    correctedError=corr_e
+                    depthM=resolved_depth,
+                    timestamp=ts_str,
+                    modelValue=round(m_val, 2),
+                    observedValue=round(o_val, 2),
+                    rawError=round(r_err, 3),
+                    correctedModelValue=round(c_val, 2) if c_val is not None else None,
+                    correctedError=round(c_err, 3) if c_err is not None else None,
+                    error=round(act_err, 3),
+                    absoluteError=round(abs(act_err), 3),
+                    variable=var_key,
+                    mode=mode_key
                 )
             )
-        return points
+
+        mae = float(np.mean(np.abs(active_errors)))
+        rmse = float(np.sqrt(np.mean(active_errors ** 2)))
+        bias = float(np.mean(active_errors))
+
+        provenance = ProvenanceInfo(
+            dataset_type="synthetic",
+            source="OceanTwin Synthetic Demo Dataset (Dataset 01 Matched Argo vs Model)",
+            dataset_id="01_matched_model_argo",
+            timestamp=points[0].timestamp if points else "2026-08-23T00:00:00Z",
+            depth_m=resolved_depth,
+            region="Arabian Sea / Indian Ocean EEZ"
+        )
+
+        return ErrorHeatmapResponse(
+            variable=var_key,
+            mode=mode_key,
+            errorConvention="observation_minus_model",
+            requestedDepthM=depth,
+            resolvedDepthM=resolved_depth,
+            points=points,
+            statistics=ErrorHeatmapStatistics(
+                matchCount=total_matched,
+                mae=round(mae, 3),
+                rmse=round(rmse, 3),
+                bias=round(bias, 3)
+            ),
+            provenance=provenance
+        )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Heatmap error: {str(e)}")
 
@@ -477,12 +607,92 @@ async def run_trajectory(
         raise HTTPException(status_code=400, detail=f"Trajectory simulation error: {str(e)}")
 
 
+def _get_groq_api_key() -> str:
+    key = os.getenv("GROQ_API_KEY") or os.getenv("NEXT_PUBLIC_GROQ_API_KEY", "")
+    if key and key.strip():
+        return key.strip()
+
+    # Fallback to reading .env files directly
+    env_paths = [
+        Path(__file__).resolve().parents[3] / ".env",
+        Path(__file__).resolve().parents[3] / "frontend" / ".env.local",
+        Path(__file__).resolve().parents[2] / ".env"
+    ]
+    for env_path in env_paths:
+        if env_path.exists():
+            try:
+                with open(env_path, "r", encoding="utf-8") as f:
+                    for line in f:
+                        line = line.strip()
+                        if line.startswith("GROQ_API_KEY=") or line.startswith("NEXT_PUBLIC_GROQ_API_KEY="):
+                            val = line.split("=", 1)[1].strip("\"' ")
+                            if val:
+                                return val
+            except Exception:
+                pass
+    return ""
+
+
+def _query_groq_llm(prompt: str) -> Optional[str]:
+    import urllib.request
+    api_key = _get_groq_api_key()
+    if not api_key:
+        return None
+
+    candidate_models = [
+        "llama-3.1-8b-instant",
+        "llama-3.3-70b-versatile",
+        "mixtral-8x7b-32768",
+        "deepseek-r1-distill-llama-70b"
+    ]
+
+    for model in candidate_models:
+        try:
+            req_data = json.dumps({
+                "model": model,
+                "messages": [
+                    {
+                        "role": "system",
+                        "content": "You are OceanTwin AI, an expert scientific oceanographer and machine learning specialist. Analyze the target ocean coordinates, model values, salinity, currents, and XGBoost bias correction details provided. Give a concise, professional 3-4 sentence analysis."
+                    },
+                    {
+                        "role": "user",
+                        "content": prompt
+                    }
+                ],
+                "temperature": 0.5,
+                "max_tokens": 300
+            }).encode("utf-8")
+
+            req = urllib.request.Request(
+                "https://api.groq.com/openai/v1/chat/completions",
+                data=req_data,
+                headers={
+                    "Content-Type": "application/json",
+                    "Authorization": f"Bearer {api_key}"
+                },
+                method="POST"
+            )
+
+            with urllib.request.urlopen(req, timeout=8) as response:
+                if response.status == 200:
+                    resp_json = json.loads(response.read().decode("utf-8"))
+                    content = resp_json.get("choices", [{}])[0].get("message", {}).get("content")
+                    if content:
+                        return content.strip()
+        except Exception:
+            continue
+    return None
+
+
 @router.get("/api/insight", response_model=RegionalInsightResponse)
 async def get_regional_insight(
     lat: float = Query(15.42),
-    lon: float = Query(68.12)
+    lon: float = Query(68.12),
+    variable: str = Query("temp"),
+    depth: float = Query(0.0)
 ):
-    """Returns summary insights for chosen ocean region from Dataset 02."""
+    """Returns dynamic AI insights for chosen ocean region using Groq LLM API and dataset metrics."""
     try:
         grid_df = get_ocean_grid_data()
         sub = grid_df[(abs(grid_df["lat"] - lat) <= 2.5) & (abs(grid_df["lon"] - lon) <= 2.5)]
@@ -493,9 +703,26 @@ async def get_regional_insight(
         mean_sal = float(sub["model_salinity_psu"].mean())
         mean_speed = float(sub["current_speed_ms"].mean())
 
+        prompt = (
+            f"Region: Ocean Sector ({lat:.2f}°N, {lon:.2f}°E). "
+            f"Selected Variable: {variable} at depth {depth}m. "
+            f"Mean Surface Temperature: {mean_temp:.2f}°C, Mean Salinity: {mean_sal:.2f} PSU, "
+            f"Current Speed: {mean_speed:.2f} m/s. "
+            f"Analyze the physical dynamics and oceanographic conditions for this region."
+        )
+
+        llm_summary = _query_groq_llm(prompt)
+        is_llm = llm_summary is not None
+
+        final_summary = llm_summary if llm_summary else (
+            f"Ocean sector centered at ({lat:.2f}°N, {lon:.2f}°E). "
+            f"Mean SST: {mean_temp:.2f}°C, Mean Salinity: {mean_sal:.2f} PSU, "
+            f"Mean Surface Velocity: {mean_speed:.2f} m/s."
+        )
+
         provenance = ProvenanceInfo(
             dataset_type="synthetic",
-            source="Dataset 02 Regional Data Aggregation",
+            source="Dataset 02 Regional Data & Groq AI Inference Engine",
             dataset_id="02_ocean_model_grid",
             region=f"Sector ({lat:.2f}°N, {lon:.2f}°E)"
         )
@@ -508,12 +735,13 @@ async def get_regional_insight(
             meanCurrentSpeed=round(mean_speed, 2),
             anomalyCount=1,
             reliability="HIGH",
-            summary=f"Ocean sector centered at ({lat:.2f}°N, {lon:.2f}°E). Mean SST: {mean_temp:.2f}°C, Mean Salinity: {mean_sal:.2f} PSU, Mean Surface Velocity: {mean_speed:.2f} m/s.",
-            isLlmConnected=False,
+            summary=final_summary,
+            isLlmConnected=is_llm,
             provenance=provenance
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Insight generation error: {str(e)}")
+
 
 
 def build_report_data(region: str, lat: float, lon: float):

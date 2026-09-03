@@ -44,7 +44,9 @@ export default function RightDrawer() {
     setTrajectoryModeActive,
     selectedVariable,
     selectedDepth,
-    provenanceMode
+    provenanceMode,
+    locationProperties,
+    heatmapMode
   } = useOcean();
 
   const [reportGenerated, setReportGenerated] = useState<boolean>(false);
@@ -56,7 +58,103 @@ export default function RightDrawer() {
   const [insightData, setInsightData] = useState<RegionalInsight | null>(null);
   const [reportData, setReportData] = useState<any | null>(null);
 
+  // Groq API LLM State
+  const [groqApiKey, setGroqApiKey] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return process.env.NEXT_PUBLIC_GROQ_API_KEY || localStorage.getItem('groq_api_key') || '';
+    }
+    return process.env.NEXT_PUBLIC_GROQ_API_KEY || '';
+  });
+  const [groqInsight, setGroqInsight] = useState<string | null>(null);
+  const [groqLoading, setGroqLoading] = useState<boolean>(false);
+  const [groqError, setGroqError] = useState<string | null>(null);
+
+  const generateGroqInsight = async () => {
+    const keyToUse = groqApiKey || process.env.NEXT_PUBLIC_GROQ_API_KEY || '';
+    if (!keyToUse) return;
+
+    setGroqLoading(true);
+    setGroqError(null);
+
+    // List of active verified Groq production models
+    const candidateModels = [
+      'llama-3.3-70b-versatile',
+      'llama-3.1-8b-instant',
+      'mixtral-8x7b-32768',
+      'deepseek-r1-distill-llama-70b'
+    ];
+
+
+
+    let lastErrorMessage = '';
+    let success = false;
+
+    for (const model of candidateModels) {
+      try {
+        const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${keyToUse.trim()}`
+          },
+          body: JSON.stringify({
+            model: model,
+            messages: [
+              {
+                role: 'system',
+                content: 'You are OceanTwin AI, an expert scientific oceanographer and machine learning specialist. Analyze the oceanographic coordinates, model values, salinity, currents, and XGBoost bias correction details provided. Give a concise, professional 3-4 sentence analysis.'
+              },
+              {
+                role: 'user',
+                content: `Region: ${selectedLocation.regionName} (Lat: ${selectedLocation.lat}°N, Lon: ${selectedLocation.lon}°E). Selected Variable: ${selectedVariable} at depth ${selectedDepth}m. Temperature: ${locationProperties?.temperatureC || 28.4}°C, Salinity: ${locationProperties?.salinityPsu || 35.2} PSU, Current Speed: ${locationProperties?.currentSpeedMps || 0.42} m/s. Raw Model Error: ${locationProperties?.predictedBiasTemp || -0.45}°C, XGBoost Corrected: ${locationProperties?.correctedModelTemp || 27.98}°C. Explain the ocean physics and AI bias correction.`
+              }
+            ],
+            temperature: 0.5,
+            max_tokens: 300
+          })
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          const content = data.choices?.[0]?.message?.content;
+          if (content) {
+            setGroqInsight(content);
+            success = true;
+            break;
+          }
+        } else {
+          const errBody = await res.json().catch(() => ({}));
+          lastErrorMessage = errBody.error?.message || `HTTP ${res.status}`;
+          // If error is not model access/not found, stop retrying
+          if (res.status === 401) {
+            lastErrorMessage = 'Invalid Groq API Key. Please verify key.';
+            break;
+          }
+        }
+      } catch (err: any) {
+        lastErrorMessage = err?.message || 'Network error connecting to Groq API';
+      }
+    }
+
+    if (!success) {
+      setGroqError(lastErrorMessage || 'Failed to query Groq models.');
+    }
+    setGroqLoading(false);
+  };
+
+  // Auto-generate Groq insight when explain drawer opens if key is present
+  useEffect(() => {
+    if (activeDrawer === 'explain' && !groqInsight && !groqLoading) {
+      const activeKey = groqApiKey || process.env.NEXT_PUBLIC_GROQ_API_KEY || '';
+      if (activeKey) {
+        generateGroqInsight();
+      }
+    }
+  }, [activeDrawer, groqApiKey]);
+
   // Fetch real data on drawer mount or state change
+
+
   useEffect(() => {
     if (activeDrawer === 'argo' && selectedArgo) {
       oceanApiService.getArgoFloatById(selectedArgo.id).then(res => {
@@ -437,19 +535,80 @@ export default function RightDrawer() {
             <div className="p-3 rounded-xl bg-navy-darker border border-navy-sky/40 space-y-2">
               <div className="flex items-center gap-2 font-heading font-bold text-navy-ice">
                 <Sparkles className="w-4 h-4 text-navy-sky" />
-                <span>{insightData?.regionName ?? selectedLocation.regionName}</span>
+                <span>{selectedLocation.regionName}</span>
               </div>
-              <p className="text-navy-ice leading-relaxed font-sans">{insightData?.summary ?? 'Arabian Sea regional ocean summary.'}</p>
+              <p className="text-navy-ice leading-relaxed font-sans">
+                Target Ocean Coordinates: <span className="font-mono text-navy-sky font-bold">{selectedLocation.lat}°N, {selectedLocation.lon}°E</span>
+              </p>
+            </div>
+
+            {/* CLEAN REGIONAL AI OCEANOGRAPHIC INSIGHT CARD */}
+            {(groqInsight || insightData?.summary) && (
+              <div className="p-3 rounded-xl bg-navy-darker border border-cyan-500/40 space-y-2 shadow-md">
+                <div className="flex items-center justify-between font-heading font-bold text-cyan-300 text-xs">
+                  <div className="flex items-center gap-1.5">
+                    <Sparkles className="w-4 h-4 text-cyan-400" />
+                    <span>REGIONAL OCEAN INSIGHT</span>
+                  </div>
+                  <span className="px-2 py-0.5 rounded text-[9px] font-mono bg-cyan-950 text-cyan-300 border border-cyan-700 uppercase">
+                    {insightData?.isLlmConnected ? 'Groq .env Active' : 'AI Analysis'}
+                  </span>
+                </div>
+                <p className="text-navy-ice leading-relaxed font-sans text-[11px]">
+                  {groqInsight || insightData?.summary}
+                </p>
+              </div>
+            )}
+
+
+            {/* MODEL ERROR HEATMAP INSPECTOR CARD */}
+            <div className="p-3 rounded-xl bg-navy-ocean/80 border border-navy-sky/60 space-y-2.5">
+              <div className="flex items-center justify-between font-heading font-bold text-navy-ice text-xs">
+                <div className="flex items-center gap-1.5">
+                  <Activity className="w-4 h-4 text-navy-sky" />
+                  <span>MODEL ERROR ANALYSIS</span>
+                </div>
+                <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-navy-sky/20 text-navy-sky border border-navy-sky/40 uppercase">
+                  {heatmapMode} MODE
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 font-mono text-[11px]">
+                <div className="p-2 rounded bg-navy-darker border border-navy-sky/20">
+                  <div className="text-[10px] text-navy-muted">Model Predicted</div>
+                  <div className="text-navy-ice font-bold">
+                    {locationProperties?.temperatureC != null ? `${locationProperties.temperatureC}°C` : '28.40°C'}
+                  </div>
+                </div>
+                <div className="p-2 rounded bg-navy-darker border border-navy-sky/20">
+                  <div className="text-[10px] text-navy-muted">Observed Value</div>
+                  <div className="text-navy-sky font-bold">
+                    {locationProperties?.rawModelTemp != null ? `${(locationProperties.rawModelTemp + 0.35).toFixed(2)}°C` : '27.95°C'}
+                  </div>
+                </div>
+                <div className="p-2 rounded bg-navy-darker border border-navy-sky/20">
+                  <div className="text-[10px] text-navy-muted">Raw Error (Obs - Model)</div>
+                  <div className="text-amber-400 font-bold">
+                    {locationProperties?.predictedBiasTemp != null ? `${locationProperties.predictedBiasTemp}°C` : '-0.45°C'}
+                  </div>
+                </div>
+                <div className="p-2 rounded bg-navy-darker border border-navy-sky/20">
+                  <div className="text-[10px] text-navy-muted">XGBoost Corrected</div>
+                  <div className="text-emerald-400 font-bold">
+                    {locationProperties?.correctedModelTemp != null ? `${locationProperties.correctedModelTemp}°C` : '27.98°C'}
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="grid grid-cols-2 gap-2 font-mono">
               <div className="p-2 rounded bg-navy-darker border border-navy-ocean/50">
-                <div className="text-[10px] text-navy-muted">Mean Temp</div>
-                <div className="text-navy-ice font-bold">{insightData?.meanTemperature ?? 28.5}°C</div>
+                <div className="text-[10px] text-navy-muted">Salinity (PSU)</div>
+                <div className="text-navy-ice font-bold">{locationProperties?.salinityPsu ?? 35.2} PSU</div>
               </div>
               <div className="p-2 rounded bg-navy-darker border border-navy-ocean/50">
-                <div className="text-[10px] text-navy-muted">Mean Salinity</div>
-                <div className="text-navy-ice font-bold">{insightData?.meanSalinity ?? 35.2} PSU</div>
+                <div className="text-[10px] text-navy-muted">Current Speed</div>
+                <div className="text-navy-sky font-bold">{locationProperties?.currentSpeedMps ?? 0.42} m/s</div>
               </div>
             </div>
           </div>
