@@ -130,8 +130,9 @@ OceanTwin 3D is developed and maintained by **Team BluePulse**:
 | **Buvanesh Raj VS** | Full-Stack Developer | [![GitHub](https://img.shields.io/badge/GitHub-buvanesh080606-181717?style=flat&logo=github)](https://github.com/buvanesh080606) |
 | **Arjun S** | Architect Developer | [![GitHub](https://img.shields.io/badge/GitHub-ARJUN--AIML-181717?style=flat&logo=github)](https://github.com/ARJUN-AIML) |
 | **Nandhini V** | Data Engineer | [![GitHub](https://img.shields.io/badge/GitHub-NandhiniVR-181717?style=flat&logo=github)](https://github.com/NandhiniVR) |
-| **Yuvan Sankar A** | Co-Developer | [![GitHub](https://img.shields.io/badge/GitHub-yuvan2103-181717?style=flat&logo=github)](https://github.com/yuvan2103) |
-| **Jayadharshan S** | Co-Developer | [![GitHub](https://img.shields.io/badge/GitHub-jayadharshan332--sys-181717?style=flat&logo=github)](https://github.com/jayadharshan332-sys) |
+| **Yuvan Sankar A** | Site Reliability Engineer | [![GitHub](https://img.shields.io/badge/GitHub-yuvan2103-181717?style=flat&logo=github)](https://github.com/yuvan2103) |
+| **Jayadharshan S** | QA Tester | [![GitHub](https://img.shields.io/badge/GitHub-jayadharshan332--sys-181717?style=flat&logo=github)](https://github.com/jayadharshan332-sys) |
+
 
 ---
 
