@@ -9,7 +9,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from backend.app.routes import health, datasets, observations, ml
+from backend.app.routes import health, datasets, observations, ml, waves
 
 app = FastAPI(
     title="INCOIS OceanTwin 3D API Bridge",
@@ -37,6 +37,7 @@ app.include_router(health.router)
 app.include_router(datasets.router)
 app.include_router(observations.router)
 app.include_router(ml.router)
+app.include_router(waves.router)
 
 
 @app.exception_handler(Exception)

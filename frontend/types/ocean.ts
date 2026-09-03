@@ -22,7 +22,8 @@ export type ActiveDrawerView =
   | 'anomaly'
   | 'trajectory'
   | 'explain'
-  | 'report';
+  | 'report'
+  | 'reliability';
 
 export interface ArgoProfilePoint {
   depth: number; // meters

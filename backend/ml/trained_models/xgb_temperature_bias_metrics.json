@@ -1,0 +1,34 @@
+{
+  "raw_model": {
+    "MAE": 0.2493,
+    "RMSE": 0.296,
+    "Bias_pred_minus_obs": 0.2036,
+    "R2": 0.9975,
+    "Correlation": 0.9994
+  },
+  "corrected_model": {
+    "MAE": 0.0901,
+    "RMSE": 0.1141,
+    "Bias_pred_minus_obs": 0.0029,
+    "R2": 0.9996,
+    "Correlation": 0.9998
+  },
+  "n_train": 21012,
+  "n_val": 4447,
+  "n_test": 4507,
+  "features": [
+    "lat",
+    "lon",
+    "depth_m",
+    "month_sin",
+    "month_cos",
+    "model_temp_c",
+    "model_salinity_psu",
+    "u_ms",
+    "v_ms",
+    "current_speed_ms"
+  ],
+  "target": "temp_error_obs_minus_model_c",
+  "dataset_type": "synthetic",
+  "provenance": "OceanTwin Synthetic Demo Dataset (Dataset 01)"
+}

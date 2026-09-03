@@ -1,95 +1,158 @@
 """
 backend/app/routes/datasets.py
 Endpoints for dataset listing, 2D slice extraction, and velocity vectors.
+Connects directly to Dataset 02 (02_ocean_model_grid_samples.csv) and Dataset 05 (05_current_vectors_trajectory.csv).
 """
 
 import math
 from typing import List, Optional
 from fastapi import APIRouter, HTTPException, Query
 import numpy as np
+import pandas as pd
 
-from backend.app.dependencies import get_dataset_manager, get_default_dataset
-from backend.app.schemas import DatasetSummary, SliceResponse, VectorsResponse, VectorPoint
-from backend.app.adapters import map_frontend_var_to_backend
-from backend.science.slicing import OceanDataSlicer
-from backend.science.canonical import VAR_U_CURRENT, VAR_V_CURRENT, VAR_TEMPERATURE, VAR_SALINITY
+from backend.app.schemas import DatasetSummary, SliceResponse, VectorsResponse, VectorPoint, ProvenanceInfo
+from backend.science.dataset_loader import get_ocean_grid_data, get_current_vectors_data
 
 router = APIRouter(tags=["Datasets"])
 
 
 @router.get("/api/datasets", response_model=List[DatasetSummary])
 async def list_datasets():
-    """Lists available registered ocean NetCDF/Zarr datasets."""
-    dm = get_dataset_manager()
-    raw_list = dm.list_datasets()
-    result = []
-    for item in raw_list:
-        ds_id = item.get("dataset_id", "default")
-        result.append(
-            DatasetSummary(
-                id=ds_id,
-                name=item.get("name", f"Dataset {ds_id}"),
-                description=f"Status: {item.get('data_status', 'SYNTHETIC')} | Size: {item.get('file_size_mb', 0)}MB",
-                spatial_bounds={"min_lat": 10.0, "max_lat": 15.0, "min_lon": 70.0, "max_lon": 75.0},
-                depth_levels=[0.0, 10.0, 50.0, 100.0, 200.0, 500.0, 1000.0, 2000.0],
-                time_steps=["2026-09-01T00:00:00Z"],
-                variables=["temp", "salinity", "currents", "waves"]
-            )
+    """Lists available registered datasets dynamically populated from active backend dataset metadata."""
+    try:
+        grid_df = get_ocean_grid_data()
+        timestamps = sorted(grid_df["time_utc"].dropna().astype(str).unique().tolist())
+        depths = sorted(grid_df["depth_m"].dropna().unique().tolist())
+        min_lat, max_lat = float(grid_df["lat"].min()), float(grid_df["lat"].max())
+        min_lon, max_lon = float(grid_df["lon"].min()), float(grid_df["lon"].max())
+
+        provenance = ProvenanceInfo(
+            dataset_type="synthetic",
+            source="OceanTwin Synthetic Demo Dataset (Dataset 02)",
+            dataset_id="02_ocean_model_grid",
+            region="Arabian Sea / Indian Ocean EEZ"
         )
-    if not result:
-        result.append(
+
+        return [
             DatasetSummary(
-                id="indian_ocean_demo",
-                name="Indian Ocean EEZ Synthetic ROMS Model Dataset",
-                description="Default high-resolution synthetic ocean model field for Arabian Sea region.",
-                spatial_bounds={"min_lat": 10.0, "max_lat": 15.0, "min_lon": 70.0, "max_lon": 75.0},
-                depth_levels=[0.0, 10.0, 50.0, 100.0, 200.0, 500.0, 1000.0, 2000.0],
-                time_steps=["2026-09-01T00:00:00Z"],
-                variables=["temp", "salinity", "currents", "waves"]
+                id="02_ocean_model_grid",
+                name="Indian Ocean ROMS Synthetic Model Grid (Dataset 02)",
+                description="Synthetic ocean model grid supporting Temp, Salinity, Currents (u/v), SSH, Chlorophyll.",
+                grid_type="regular",
+                spatial_bounds={"min_lat": min_lat, "max_lat": max_lat, "min_lon": min_lon, "max_lon": max_lon},
+                depth_levels=[float(d) for d in depths],
+                time_steps=timestamps,
+                variables=["temp", "salinity", "currents", "waves", "ssh", "chlorophyll"],
+                provenance=provenance
             )
-        )
-    return result
+        ]
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to list datasets: {str(e)}")
 
 
 @router.get("/api/datasets/{dataset_id}/slice", response_model=SliceResponse)
 @router.get("/api/slice", response_model=SliceResponse)
 async def get_slice(
     dataset_id: str = "default",
-    variable: str = Query("temp", description="temp | salinity | currents | waves"),
+    variable: str = Query("temp", description="temp | salinity | currents | ssh | chlorophyll"),
     depth: float = Query(0.0, description="Depth level in meters"),
-    time: Optional[str] = Query(None, description="ISO timestamp or time index")
+    time: Optional[str] = Query(None, description="ISO timestamp string or index")
 ):
-    """Extracts a 2D spatial slice of requested variable at target depth and time step."""
+    """Extracts a 2D spatial grid slice of requested variable at target depth and time step from Dataset 02."""
+    if variable.lower() == "waves":
+        raise HTTPException(
+            status_code=400,
+            detail="Wave variables belong to Dataset 06 (/api/waves). Do not query Dataset 02 for wave slices."
+        )
+
     try:
-        ds, _ = get_default_dataset()
-        slicer = OceanDataSlicer(ds)
+        grid_df = get_ocean_grid_data()
 
-        cf_var = map_frontend_var_to_backend(variable)
-        time_idx = int(time) if (time and time.isdigit()) else 0
-        slice_result = slicer.extract_2d_slice(variable=cf_var, depth=depth, time_index=time_idx)
+        # Map variable to column name
+        col_map = {
+            "temp": "model_temp_c",
+            "temperature": "model_temp_c",
+            "salinity": "model_salinity_psu",
+            "currents": "current_speed_ms",
+            "u_ms": "u_ms",
+            "v_ms": "v_ms",
+            "ssh": "ssh_m",
+            "chlorophyll": "chlorophyll_mg_m3"
+        }
+        col_name = col_map.get(variable.lower(), "model_temp_c")
 
-        grid_values = slice_result["data_grid"]
-        clean_grid = []
-        for row in grid_values:
-            clean_row = []
-            for val in row:
-                if val is None or np.isnan(val) or np.isinf(val):
-                    clean_row.append(None)
+        # Select closest depth
+        available_depths = np.array(sorted(grid_df["depth_m"].unique()))
+        closest_depth = float(available_depths[np.argmin(np.abs(available_depths - depth))])
+
+        # Filter depth
+        df_sub = grid_df[grid_df["depth_m"] == closest_depth].copy()
+
+        # Select time
+        available_times = sorted(df_sub["time_utc"].unique().tolist())
+        if time:
+            if time.isdigit():
+                idx = min(int(time), len(available_times) - 1)
+                selected_time = available_times[idx]
+            elif time in available_times:
+                selected_time = time
+            else:
+                selected_time = available_times[0]
+        else:
+            selected_time = available_times[0]
+
+        df_slice = df_sub[df_sub["time_utc"] == selected_time]
+
+        # Pivot to lat-lon 2D matrix
+        lats = sorted(df_slice["lat"].unique().tolist())
+        lons = sorted(df_slice["lon"].unique().tolist())
+
+        pivot_df = df_slice.pivot(index="lat", columns="lon", values=col_name)
+
+        values_grid = []
+        for lat in lats:
+            row_vals = []
+            for lon in lons:
+                if lat in pivot_df.index and lon in pivot_df.columns:
+                    v = pivot_df.loc[lat, lon]
+                    row_vals.append(round(float(v), 3) if pd.notnull(v) else None)
                 else:
-                    clean_row.append(round(float(val), 3))
-            clean_grid.append(clean_row)
+                    row_vals.append(None)
+            values_grid.append(row_vals)
+
+        valid_vals = df_slice[col_name].dropna().to_numpy()
+        min_v = float(np.min(valid_vals)) if len(valid_vals) > 0 else 0.0
+        max_v = float(np.max(valid_vals)) if len(valid_vals) > 0 else 1.0
+
+        units_map = {
+            "temp": "°C",
+            "salinity": "PSU",
+            "currents": "m/s",
+            "ssh": "m",
+            "chlorophyll": "mg/m³"
+        }
+
+        provenance = ProvenanceInfo(
+            dataset_type="synthetic",
+            source="OceanTwin Synthetic Demo Dataset (Dataset 02)",
+            dataset_id="02_ocean_model_grid",
+            timestamp=selected_time,
+            depth_m=closest_depth,
+            region="Arabian Sea / Indian Ocean EEZ"
+        )
 
         return SliceResponse(
             datasetId=dataset_id,
             variable=variable,
-            depth=float(slice_result["depth_actual"]),
-            time=str(slice_result["time_actual"]),
-            minVal=round(float(slice_result["min_val"]), 2),
-            maxVal=round(float(slice_result["max_val"]), 2),
-            units=str(slice_result["units"]),
-            latitudes=[round(float(lat), 4) for lat in slice_result["latitude"]],
-            longitudes=[round(float(lon), 4) for lon in slice_result["longitude"]],
-            values=clean_grid
+            depth=closest_depth,
+            time=selected_time,
+            minVal=round(min_v, 2),
+            maxVal=round(max_v, 2),
+            units=units_map.get(variable.lower(), ""),
+            latitudes=[round(float(l), 4) for l in lats],
+            longitudes=[round(float(l), 4) for l in lons],
+            values=values_grid,
+            provenance=provenance
         )
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Slice extraction error: {str(e)}")
@@ -100,49 +163,63 @@ async def get_slice(
 async def get_vectors(
     dataset_id: str = "default",
     depth: float = Query(0.0, description="Depth level in meters"),
-    time: Optional[str] = Query(None, description="ISO timestamp or time index"),
+    time: Optional[str] = Query(None, description="ISO timestamp string or index"),
     stride: int = Query(1, description="Subsampling stride")
 ):
-    """Subsamples horizontal current velocity vectors (u, v) for rendering animated current fields."""
+    """Subsamples horizontal current velocity vectors (u, v) from Dataset 05 or Dataset 02."""
     try:
-        dm = get_dataset_manager()
-        ds = dm.get_dataset(dataset_id) if (dataset_id and dataset_id != "default" and dataset_id in getattr(dm, 'datasets', {})) else get_default_dataset()[0]
-        slicer = OceanDataSlicer(ds)
-        time_idx = int(time) if (time and time.isdigit()) else 0
-        vec_data = slicer.extract_velocity_vectors(depth=depth, time_index=time_idx, stride=stride)
+        try:
+            vec_df = get_current_vectors_data()
+        except Exception:
+            vec_df = get_ocean_grid_data()
+
+        # Select closest depth if depth_m column exists
+        if "depth_m" in vec_df.columns:
+            available_depths = np.array(sorted(vec_df["depth_m"].unique()))
+            closest_depth = float(available_depths[np.argmin(np.abs(available_depths - depth))])
+            df_sub = vec_df[vec_df["depth_m"] == closest_depth]
+        else:
+            closest_depth = 0.0
+            df_sub = vec_df
+
+        # Subsample with stride
+        sub_df = df_sub.iloc[::stride].copy()
 
         vectors = []
-        u_grid = np.array(vec_data["u"], dtype=float)
-        v_grid = np.array(vec_data["v"], dtype=float)
-        lats = vec_data["latitude"]
-        lons = vec_data["longitude"]
+        for _, row in sub_df.iterrows():
+            u_val = float(row["u_ms"])
+            v_val = float(row["v_ms"])
+            speed = float(row.get("current_speed_ms", math.sqrt(u_val**2 + v_val**2)))
+            direction = (math.degrees(math.atan2(u_val, v_val)) + 360) % 360
 
-        for i in range(len(lats)):
-            for j in range(len(lons)):
-                if i < u_grid.shape[0] and j < u_grid.shape[1]:
-                    u_val = float(u_grid[i, j])
-                    v_val = float(v_grid[i, j])
-                    if not (np.isnan(u_val) or np.isnan(v_val)):
-                        speed = math.sqrt(u_val**2 + v_val**2)
-                        direction = (math.degrees(math.atan2(u_val, v_val)) + 360) % 360
-                        vectors.append(
-                            VectorPoint(
-                                lat=round(float(lats[i]), 4),
-                                lon=round(float(lons[j]), 4),
-                                u=round(u_val, 3),
-                                v=round(v_val, 3),
-                                speed=round(speed, 3),
-                                directionDeg=round(direction, 1)
-                            )
-                        )
+            vectors.append(
+                VectorPoint(
+                    lat=round(float(row["lat"]), 4),
+                    lon=round(float(row["lon"]), 4),
+                    u=round(u_val, 3),
+                    v=round(v_val, 3),
+                    speed=round(speed, 3),
+                    directionDeg=round(direction, 1)
+                )
+            )
+
+        provenance = ProvenanceInfo(
+            dataset_type="synthetic",
+            source="OceanTwin Synthetic Demo Dataset (Dataset 05 / 02)",
+            dataset_id="05_current_vectors",
+            depth_m=closest_depth,
+            region="Arabian Sea / Indian Ocean EEZ"
+        )
+
+        selected_time = str(df_sub["time_utc"].iloc[0]) if "time_utc" in df_sub.columns else "2026-08-23T00:00:00Z"
 
         return VectorsResponse(
             datasetId=dataset_id,
-            depth=depth,
-            time=str(vec_data["time_actual"]),
+            depth=closest_depth,
+            time=selected_time,
             vectorCount=len(vectors),
-            vectors=vectors
+            vectors=vectors,
+            provenance=provenance
         )
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Vectors extraction error: {str(e)}")
-

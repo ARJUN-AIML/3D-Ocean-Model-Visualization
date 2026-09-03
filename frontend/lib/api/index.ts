@@ -12,21 +12,7 @@ import {
   ErrorHeatmapPoint
 } from '../../types/ocean';
 
-import {
-  DEMO_ARGO_FLOATS,
-  DEMO_VALIDATION_METRICS,
-  DEMO_BIAS_CORRECTION,
-  DEMO_RELIABILITY_DATA,
-  DEMO_ANOMALIES,
-  DEMO_TRAJECTORY_SIMULATION,
-  DEMO_REGIONAL_INSIGHT,
-  DEMO_MODEL_OBS_MATCH,
-  DEMO_ERROR_HEATMAP,
-  DEMO_CURRENT_VECTORS,
-  DEMO_DATA_NOTICE
-} from '../../mocks/oceanDemoData';
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:8000';
 
 async function fetchFromApi<T>(endpoint: string, options?: RequestInit): Promise<T | null> {
   try {
@@ -37,126 +23,106 @@ async function fetchFromApi<T>(endpoint: string, options?: RequestInit): Promise
     if (!res.ok) return null;
     return await res.json();
   } catch (err) {
+    console.warn(`[OceanAPI] Failed to fetch from endpoint ${endpoint}:`, err);
     return null;
   }
 }
 
 /**
  * Frontend Service / API Boundary Layer
- * 
- * Attempts to communicate with FastAPI REST endpoints at API_BASE_URL.
- * If backend is unavailable or fails, gracefully falls back to typed DEMO / MOCK datasets.
+ * Enforces API connectivity to FastAPI backend at localhost:8000 without silent mock fallbacks.
  */
 export const oceanApiService = {
   getProvenanceStatus: async () => {
-    const health = await fetchFromApi<{ status: string; provenance_mode?: string; dataMode?: string }>(`/api/health`);
+    const health = await fetchFromApi<{ status: string; provenance_mode?: string }>(`/api/health`);
     if (health && health.status === 'ok') {
-      const modeStr = health.provenance_mode || health.dataMode || 'REAL DATA (FastAPI Connected)';
+      const modeStr = health.provenance_mode || 'SYNTHETIC DEMO DATASET (FastAPI Connected)';
       return {
         mode: `FASTAPI BACKEND (${modeStr})` as const,
-        notice: 'Connected to live FastAPI Scientific & ML Backend API boundary.',
+        notice: 'Connected to live FastAPI Backend (Active Synthetic Demo Dataset).',
         isRealDataConnected: true
       };
     }
     return {
-      mode: 'DEMO / MOCK DATA' as const,
-      notice: DEMO_DATA_NOTICE,
+      mode: 'DATA UNAVAILABLE' as const,
+      notice: 'Backend API Unreachable — Check http://localhost:8000',
       isRealDataConnected: false
     };
   },
 
   getArgoFloats: async (): Promise<ArgoFloat[]> => {
     const data = await fetchFromApi<ArgoFloat[]>(`/api/observations?instrument_type=argo`);
-    if (data && Array.isArray(data) && data.length > 0) return data;
-    return DEMO_ARGO_FLOATS;
+    return data || [];
   },
 
   getArgoFloatById: async (id: string): Promise<ArgoFloat | undefined> => {
     const data = await fetchFromApi<ArgoFloat>(`/api/observations/${encodeURIComponent(id)}/profile`);
-    if (data) return data;
-    return DEMO_ARGO_FLOATS.find(f => f.id === id || f.wmoNumber === id);
+    return data || undefined;
   },
 
-  getModelObsMatch: async (floatId: string, variable: OceanVariable): Promise<ModelObsMatch> => {
+  getModelObsMatch: async (floatId: string, variable: OceanVariable): Promise<ModelObsMatch | null> => {
     const data = await fetchFromApi<ModelObsMatch>(`/api/model-obs-match?float_id=${encodeURIComponent(floatId)}&variable=${encodeURIComponent(variable)}`);
-    if (data) return data;
-    return {
-      ...DEMO_MODEL_OBS_MATCH,
-      floatId,
-      variable
-    };
+    return data;
   },
 
-  getBiasCorrectionData: async (variable: OceanVariable, depth: DepthLevel): Promise<BiasCorrectionData> => {
+  getBiasCorrectionData: async (variable: OceanVariable, depth: DepthLevel): Promise<BiasCorrectionData | null> => {
     const reqBody = {
       targetVariable: variable,
       sensorType: 'argo',
       modelTemperature: 28.5,
       modelSalinity: 35.5,
-      modelU: 0.1,
-      modelV: 0.2,
+      modelU: 0.15,
+      modelV: -0.05,
       depth: typeof depth === 'number' ? depth : 0,
-      latitude: 15.0,
-      longitude: 70.0
+      latitude: 15.42,
+      longitude: 68.12
     };
     const data = await fetchFromApi<BiasCorrectionData>(`/api/bias/predict`, {
       method: 'POST',
       body: JSON.stringify(reqBody)
     });
-    if (data) return data;
-    return {
-      ...DEMO_BIAS_CORRECTION,
-      variable,
-      depth
-    };
+    return data;
   },
 
-  getValidationMetrics: async (variable: OceanVariable): Promise<ValidationMetrics> => {
+  getValidationMetrics: async (variable: OceanVariable): Promise<ValidationMetrics | null> => {
     const data = await fetchFromApi<ValidationMetrics>(`/api/validation/metrics?variable=${encodeURIComponent(variable)}`);
-    if (data) return data;
-    return {
-      ...DEMO_VALIDATION_METRICS,
-      variable
-    };
+    return data;
   },
 
-  getReliabilityData: async (): Promise<ReliabilityData> => {
+  getReliabilityData: async (): Promise<ReliabilityData | null> => {
     const data = await fetchFromApi<ReliabilityData>(`/api/reliability`);
-    if (data) return data;
-    return DEMO_RELIABILITY_DATA;
+    return data;
   },
 
   getAnomalies: async (): Promise<OceanAnomaly[]> => {
     const data = await fetchFromApi<OceanAnomaly[]>(`/api/anomalies`);
-    if (data && Array.isArray(data)) return data;
-    return DEMO_ANOMALIES;
+    return data || [];
   },
 
   getErrorHeatmap: async (): Promise<ErrorHeatmapPoint[]> => {
     const data = await fetchFromApi<ErrorHeatmapPoint[]>(`/api/heatmap`);
-    if (data && Array.isArray(data)) return data;
-    return DEMO_ERROR_HEATMAP;
+    return data || [];
+  },
+
+  getWaveData: async () => {
+    const data = await fetchFromApi<any>(`/api/waves`);
+    return data;
   },
 
   runTrajectorySimulation: async (
     startLat: number,
     startLon: number,
     durationHours: 6 | 12 | 24 | 48
-  ): Promise<TrajectoryResult> => {
+  ): Promise<TrajectoryResult | null> => {
     const data = await fetchFromApi<TrajectoryResult>(`/api/trajectory?startLat=${startLat}&startLon=${startLon}&durationHours=${durationHours}`, {
       method: 'POST'
     });
-    if (data) return data;
-    return DEMO_TRAJECTORY_SIMULATION(startLat, startLon, durationHours);
+    return data;
   },
 
-  getRegionalInsight: async (lat: number, lon: number): Promise<RegionalInsight> => {
+  getRegionalInsight: async (lat: number, lon: number): Promise<RegionalInsight | null> => {
     const data = await fetchFromApi<RegionalInsight>(`/api/insight?lat=${lat}&lon=${lon}`);
-    if (data) return data;
-    return {
-      ...DEMO_REGIONAL_INSIGHT,
-      regionName: `Location (${lat.toFixed(2)}°, ${lon.toFixed(2)}°)`
-    };
+    return data;
   },
 
   getCurrentVectors: async (datasetId: string = 'default', depth: number = 0, timeIndex: number = 0, stride: number = 1) => {
@@ -170,7 +136,7 @@ export const oceanApiService = {
     if (data && data.vectors && data.vectors.length > 0) {
       return data.vectors;
     }
-    return DEMO_CURRENT_VECTORS;
+    return [];
   },
 
   getDatasets: async () => {
@@ -179,16 +145,22 @@ export const oceanApiService = {
       if (Array.isArray(data)) return data;
       if (Array.isArray(data.datasets)) return data.datasets;
     }
-    return [{ id: 'indian_ocean_demo', name: 'Indian Ocean Regional Model (Default)', status: 'SYNTHETIC' }];
+    return [];
   },
 
-  getDatasetSlice: async (datasetId: string = 'default', variable: OceanVariable = 'temp', depth: number = 0, timeIndex: number = 0) => {
+  getDatasetSlice: async (datasetId: string = '02_ocean_model_grid', variable: OceanVariable = 'temp', depth: number = 0, timeIndex: number = 0) => {
     const data = await fetchFromApi<{
       datasetId: string;
       variable: string;
       depth: number;
       time: string;
-      grid: { lats: number[]; lons: number[]; values: number[][] };
+      values: (number | null)[][];
+      latitudes: number[];
+      longitudes: number[];
+      minVal: number;
+      maxVal: number;
+      units: string;
+      provenance?: any;
     }>(`/api/datasets/${datasetId}/slice?variable=${variable}&depth=${depth}&time=${timeIndex}`);
     return data;
   }

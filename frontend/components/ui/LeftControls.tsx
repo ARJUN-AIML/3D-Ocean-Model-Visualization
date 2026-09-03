@@ -222,6 +222,43 @@ export default function LeftControls() {
                 <Sparkles className="w-4 h-4" />
                 <span className="tracking-wide">AI MODEL INSIGHTS & PREDICTIONS</span>
               </button>
+
+              {/* QUICK SCIENTIFIC ANALYTICS DRAWERS */}
+              <div className="grid grid-cols-3 gap-1 pt-1">
+                <button
+                  onClick={() => setActiveDrawer(activeDrawer === 'reliability' ? 'none' : 'reliability')}
+                  className={`py-1 px-1.5 rounded text-[10px] font-mono text-center transition border ${
+                    activeDrawer === 'reliability'
+                      ? 'bg-navy-sky text-navy-deep font-bold border-navy-ice'
+                      : 'bg-navy-ocean text-navy-ice border-navy-sky/60 hover:bg-navy-sky hover:text-navy-deep'
+                  }`}
+                  title="View Model Reliability Score"
+                >
+                  🛡️ Reliability
+                </button>
+                <button
+                  onClick={() => setActiveDrawer(activeDrawer === 'argo' ? 'none' : 'argo')}
+                  className={`py-1 px-1.5 rounded text-[10px] font-mono text-center transition border ${
+                    activeDrawer === 'argo'
+                      ? 'bg-navy-sky text-navy-deep font-bold border-navy-ice'
+                      : 'bg-navy-ocean text-navy-ice border-navy-sky/60 hover:bg-navy-sky hover:text-navy-deep'
+                  }`}
+                  title="View Vertical CTD Depth Profile"
+                >
+                  📈 Profile
+                </button>
+                <button
+                  onClick={() => setActiveDrawer(activeDrawer === 'bias' ? 'none' : 'bias')}
+                  className={`py-1 px-1.5 rounded text-[10px] font-mono text-center transition border ${
+                    activeDrawer === 'bias'
+                      ? 'bg-navy-sky text-navy-deep font-bold border-navy-ice'
+                      : 'bg-navy-ocean text-navy-ice border-navy-sky/60 hover:bg-navy-sky hover:text-navy-deep'
+                  }`}
+                  title="View XGBoost Bias-Correction"
+                >
+                  ⚡ Bias Field
+                </button>
+              </div>
             </div>
           </div>
         )}

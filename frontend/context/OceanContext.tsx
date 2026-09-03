@@ -13,7 +13,6 @@ import {
   DataProvenanceMode
 } from '../types/ocean';
 
-import { DEMO_ARGO_FLOATS, DEMO_ANOMALIES } from '../mocks/oceanDemoData';
 import { oceanApiService } from '../lib/api';
 
 interface OceanContextType {
@@ -21,6 +20,9 @@ interface OceanContextType {
   selectedDatasetId: string;
   setSelectedDatasetId: (id: string) => void;
   datasets: any[];
+  availableTimeSteps: string[];
+  availableDepths: number[];
+  availableVariables: string[];
 
   // Variable & Depth state
   selectedVariable: OceanVariable;
@@ -98,34 +100,31 @@ const defaultLayers: LayerVisibilityState = {
 
 const OceanContext = createContext<OceanContextType | undefined>(undefined);
 
-const TIME_STEPS = [
-  "2026-09-01T00:00:00Z",
-  "2026-09-01T06:00:00Z",
-  "2026-09-01T12:00:00Z",
-  "2026-09-01T18:00:00Z",
-  "2026-09-02T00:00:00Z",
-  "2026-09-02T06:00:00Z",
-  "2026-09-02T12:00:00Z",
-  "2026-09-02T18:00:00Z",
-  "2026-09-03T00:00:00Z",
-];
-
 export const OceanProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [datasets, setDatasets] = useState<any[]>([]);
-  const [selectedDatasetId, setSelectedDatasetId] = useState<string>('indian_ocean_demo');
+  const [selectedDatasetId, setSelectedDatasetId] = useState<string>('02_ocean_model_grid');
   const [selectedVariable, setSelectedVariable] = useState<OceanVariable>('temp');
   const [selectedDepth, setSelectedDepth] = useState<DepthLevel>(0);
-  
-  const [timeIndex, setTimeIndex] = useState<number>(5); // Default 02 SEP 06:00 UTC
+
+  const [availableTimeSteps, setAvailableTimeSteps] = useState<string[]>([
+    "2026-08-23T00:00:00Z",
+    "2026-08-23T06:00:00Z",
+    "2026-08-23T12:00:00Z",
+    "2026-08-23T18:00:00Z",
+  ]);
+  const [availableDepths, setAvailableDepths] = useState<number[]>([0, 10, 25, 50, 100, 250, 500, 1000]);
+  const [availableVariables, setAvailableVariables] = useState<string[]>(["temp", "salinity", "currents", "waves"]);
+
+  const [timeIndex, setTimeIndex] = useState<number>(0);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [playbackSpeed, setPlaybackSpeed] = useState<number>(1);
 
   const [layers, setLayers] = useState<LayerVisibilityState>(defaultLayers);
   const [activeDrawer, setActiveDrawer] = useState<ActiveDrawerView>('none');
 
-  const [selectedArgo, setSelectedArgo] = useState<ArgoFloat | null>(DEMO_ARGO_FLOATS[0]);
+  const [selectedArgo, setSelectedArgo] = useState<ArgoFloat | null>(null);
   const [selectedAnomaly, setSelectedAnomaly] = useState<OceanAnomaly | null>(null);
-  
+
   const [selectedLocation, setSelectedLocation] = useState<SelectedLocationState>({
     lat: 15.42,
     lon: 68.12,
@@ -155,8 +154,18 @@ export const OceanProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     oceanApiService.getDatasets().then(list => {
       if (list && list.length > 0) {
         setDatasets(list);
-        if (list[0].id) {
-          setSelectedDatasetId(list[0].id);
+        const activeDs = list[0];
+        if (activeDs.id) {
+          setSelectedDatasetId(activeDs.id);
+        }
+        if (activeDs.time_steps && Array.isArray(activeDs.time_steps) && activeDs.time_steps.length > 0) {
+          setAvailableTimeSteps(activeDs.time_steps);
+        }
+        if (activeDs.depth_levels && Array.isArray(activeDs.depth_levels) && activeDs.depth_levels.length > 0) {
+          setAvailableDepths(activeDs.depth_levels);
+        }
+        if (activeDs.variables && Array.isArray(activeDs.variables) && activeDs.variables.length > 0) {
+          setAvailableVariables(activeDs.variables);
         }
       }
     });
@@ -165,20 +174,20 @@ export const OceanProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   // Time playback ticker
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    if (isPlaying) {
+    if (isPlaying && availableTimeSteps.length > 0) {
       interval = setInterval(() => {
-        setTimeIndex((prev) => (prev + 1) % TIME_STEPS.length);
+        setTimeIndex((prev) => (prev + 1) % availableTimeSteps.length);
       }, 2000 / playbackSpeed);
     }
     return () => clearInterval(interval);
-  }, [isPlaying, playbackSpeed]);
+  }, [isPlaying, playbackSpeed, availableTimeSteps]);
 
   const resetView = useCallback(() => {
     setZoomAction('reset');
     setCameraFlyTarget({ lat: -2.0, lon: 78.0, height: 6500000, pitch: -45, heading: 0 });
   }, []);
 
-  // Global Keyboard Shortcuts (Space: Play/Pause, R: Reset View, A: Auto-Rotate, Esc: Close Drawer)
+  // Global Keyboard Shortcuts
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement;
@@ -207,7 +216,6 @@ export const OceanProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [resetView]);
 
-  // Responsive panel management: Auto-collapse left controls on smaller screens when right drawer opens
   useEffect(() => {
     if (typeof window !== 'undefined' && activeDrawer !== 'none') {
       if (window.innerWidth < 1280) {
@@ -242,12 +250,15 @@ export const OceanProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     setCameraFlyTarget(null);
   }, []);
 
-  const formattedCurrentTime = useMemo(() => TIME_STEPS[timeIndex] || TIME_STEPS[0], [timeIndex]);
+  const formattedCurrentTime = useMemo(() => availableTimeSteps[timeIndex] || availableTimeSteps[0] || "2026-08-23T00:00:00Z", [availableTimeSteps, timeIndex]);
 
   const contextValue = useMemo(() => ({
     selectedDatasetId,
     setSelectedDatasetId,
     datasets,
+    availableTimeSteps,
+    availableDepths,
+    availableVariables,
     selectedVariable,
     setSelectedVariable,
     selectedDepth,
@@ -294,6 +305,9 @@ export const OceanProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }), [
     selectedDatasetId,
     datasets,
+    availableTimeSteps,
+    availableDepths,
+    availableVariables,
     selectedVariable,
     selectedDepth,
     timeIndex,

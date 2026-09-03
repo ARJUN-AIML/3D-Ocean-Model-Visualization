@@ -12,8 +12,17 @@ class HealthResponse(BaseModel):
     status: str = "ok"
     version: str = "1.0.0"
     is_real_data_connected: bool = True
-    provenance_mode: str = "REAL DATA (FastAPI Connected)"
-    message: str = "INCOIS OceanTwin 3D FastAPI Backend Operational"
+    provenance_mode: str = "SYNTHETIC DEMO DATASET (FastAPI Connected)"
+    message: str = "OceanTwin 3D FastAPI Backend Operational"
+
+
+class ProvenanceInfo(BaseModel):
+    dataset_type: str = "synthetic"
+    source: str = "OceanTwin Synthetic Demo Dataset"
+    dataset_id: str = "02_ocean_model_grid"
+    timestamp: Optional[str] = None
+    depth_m: Optional[float] = None
+    region: Optional[str] = None
 
 
 class DatasetSummary(BaseModel):
@@ -25,6 +34,7 @@ class DatasetSummary(BaseModel):
     depth_levels: List[float]
     time_steps: List[str]
     variables: List[str]
+    provenance: Optional[ProvenanceInfo] = None
 
 
 class SliceResponse(BaseModel):
@@ -38,6 +48,7 @@ class SliceResponse(BaseModel):
     latitudes: List[float]
     longitudes: List[float]
     values: List[List[Optional[float]]]
+    provenance: Optional[ProvenanceInfo] = None
 
 
 class VectorPoint(BaseModel):
@@ -55,6 +66,23 @@ class VectorsResponse(BaseModel):
     time: str
     vectorCount: int
     vectors: List[VectorPoint]
+    provenance: Optional[ProvenanceInfo] = None
+
+
+class WaveSamplePoint(BaseModel):
+    lat: float
+    lon: float
+    timestamp: str
+    significantWaveHeightM: float
+    peakWavePeriodS: float
+    meanWaveDirectionDeg: float
+
+
+class WaveResponse(BaseModel):
+    datasetId: str = "06_wave_samples"
+    count: int
+    waves: List[WaveSamplePoint]
+    provenance: Optional[ProvenanceInfo] = None
 
 
 class ArgoProfilePoint(BaseModel):
@@ -75,6 +103,7 @@ class ArgoFloatResponse(BaseModel):
     observationTime: str
     qualityStatus: str  # 'PASSED' | 'FLAGGED' | 'UNCERTAIN'
     profileData: List[ArgoProfilePoint]
+    provenance: Optional[ProvenanceInfo] = None
 
 
 class ModelObsMatchResponse(BaseModel):
@@ -87,6 +116,7 @@ class ModelObsMatchResponse(BaseModel):
     timeDifferenceHours: float
     depthDifferenceM: float
     qualityStatus: str  # 'EXCELLENT' | 'GOOD' | 'MARGINAL'
+    provenance: Optional[ProvenanceInfo] = None
 
 
 class BiasPredictionApiRequest(BaseModel):
@@ -113,6 +143,16 @@ class BiasCorrectionResponse(BaseModel):
     correctedError: float
     improvementPct: float
     mlModelName: str
+    provenance: Optional[ProvenanceInfo] = None
+
+
+class RawAndCorrectedMetrics(BaseModel):
+    mae: float
+    rmse: float
+    bias: float
+    r2: float
+    pearson: float
+    matchCount: int
 
 
 class ValidationMetricsResponse(BaseModel):
@@ -128,6 +168,10 @@ class ValidationMetricsResponse(BaseModel):
     coveragePct: float
     reliability: str
     isBackendConnected: bool = True
+    rawModel: Optional[RawAndCorrectedMetrics] = None
+    correctedModel: Optional[RawAndCorrectedMetrics] = None
+    evaluationSplit: str = "held-out test split"
+    provenance: Optional[ProvenanceInfo] = None
 
 
 class ReliabilityFactor(BaseModel):
@@ -140,6 +184,7 @@ class ReliabilityDataResponse(BaseModel):
     overallStatus: str
     score: float
     factors: List[ReliabilityFactor]
+    provenance: Optional[ProvenanceInfo] = None
 
 
 class OceanAnomalyResponse(BaseModel):
@@ -155,6 +200,7 @@ class OceanAnomalyResponse(BaseModel):
     deviation: float
     zScore: float
     severity: str
+    provenance: Optional[ProvenanceInfo] = None
 
 
 class ErrorHeatmapPointResponse(BaseModel):
@@ -189,6 +235,7 @@ class TrajectoryResultResponse(BaseModel):
     totalDistanceKm: float
     averageSpeedMps: float
     statusText: str
+    provenance: Optional[ProvenanceInfo] = None
 
 
 class RegionalInsightResponse(BaseModel):
@@ -201,3 +248,5 @@ class RegionalInsightResponse(BaseModel):
     reliability: str
     summary: str
     isLlmConnected: bool = False
+    provenance: Optional[ProvenanceInfo] = None
+
