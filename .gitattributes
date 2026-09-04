@@ -1,0 +1,4 @@
+# Track NetCDF files and split dataset parts with Git LFS
+*.nc filter=lfs diff=lfs merge=lfs -text
+*.part* filter=lfs diff=lfs merge=lfs -text
+*.csv filter=lfs diff=lfs merge=lfs -text
